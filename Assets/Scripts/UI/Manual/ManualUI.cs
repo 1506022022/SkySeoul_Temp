@@ -37,7 +37,6 @@ public class ManualUI : MonoBehaviour
         OffManualUI();
     }
 
-
     private void OnTriggerEnter(Collider other)
     {
         
@@ -53,7 +52,6 @@ public class ManualUI : MonoBehaviour
         {
             UI_SizeRescaling(rectTransform, _rescalingSize);
         }
-
     }
 
     public void OnManualUI()

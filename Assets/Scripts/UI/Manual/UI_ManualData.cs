@@ -5,5 +5,5 @@ public class UI_ManualData : ScriptableObject
 {
     public string Title;
     public Sprite Image;
-    public string Description;
+    [TextArea]public string Description;
 }
