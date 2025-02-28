@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3073575849260479937}
   m_Layer: 5
-  m_Name: Controll_Page
+  m_Name: OneImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
