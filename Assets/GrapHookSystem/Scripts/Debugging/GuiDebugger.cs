@@ -1,4 +1,6 @@
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 
@@ -25,7 +27,7 @@ public class GuiDebugger : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (EditorApplication.isPlaying)
+        if (Application.isPlaying)
         {
             Gizmos.color = Color.cyan;
 

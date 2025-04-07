@@ -5,19 +5,22 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/MFPS/Scenes/MainMenu.unity
     guid: fcfe9637e4043474a98d431ae71e26c2
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainMenu.unity
     guid: 36032bbfaa5473f41bf5233934f12300
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Game.unity
     guid: 1ca61f6ecfdae994fbec0ca2b7aac778
-  - enabled: 1
+  - enabled: 0
     path: Assets/MFPS/Scenes/ExampleLevel.unity
     guid: 7b433244bb0354246a7c6a8c682e5441
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/CutScene_A1_1_1.unity
     guid: 29883679bb550084a8531334c71de8e2
+  - enabled: 1
+    path: "Assets/0.1 \uC791\uC5C5/New Scene.unity"
+    guid: f49eae9904f219d4c86518543f8c8743
   m_configObjects: {}

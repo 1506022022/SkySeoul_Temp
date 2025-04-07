@@ -102,7 +102,7 @@ public class ParkourController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-       if(EditorApplication.isPlaying)
+       if(Application.isPlaying)
         {
             if(canZip)
                 DrawSphere(zipPoint + Vector3.up);

@@ -430,7 +430,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &614234434
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1171,6 +1171,74 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1001 &1213058943
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4583182296987857647, guid: 7097f82a4d72a214d9c1c988ff7c136a,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4583182296987857647, guid: 7097f82a4d72a214d9c1c988ff7c136a,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.58
+      objectReference: {fileID: 0}
+    - target: {fileID: 4583182296987857647, guid: 7097f82a4d72a214d9c1c988ff7c136a,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4583182296987857647, guid: 7097f82a4d72a214d9c1c988ff7c136a,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4583182296987857647, guid: 7097f82a4d72a214d9c1c988ff7c136a,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4583182296987857647, guid: 7097f82a4d72a214d9c1c988ff7c136a,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4583182296987857647, guid: 7097f82a4d72a214d9c1c988ff7c136a,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4583182296987857647, guid: 7097f82a4d72a214d9c1c988ff7c136a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4583182296987857647, guid: 7097f82a4d72a214d9c1c988ff7c136a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4583182296987857647, guid: 7097f82a4d72a214d9c1c988ff7c136a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6893617810621126438, guid: 7097f82a4d72a214d9c1c988ff7c136a,
+        type: 3}
+      propertyPath: m_Name
+      value: 1_Hanyounghee
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7097f82a4d72a214d9c1c988ff7c136a, type: 3}
 --- !u!1 &1381851490
 GameObject:
   m_ObjectHideFlags: 3
@@ -1501,7 +1569,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1678003795
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2332,7 +2400,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1644849249071463169
 Transform:
   m_ObjectHideFlags: 0
@@ -5101,16 +5169,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ae3ac8cb8f3ca44894016064f5ecb93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
-  currentHealth: 100
-  baseDefence: 0
-  additionlDefence: 0
-  speed: 5
+  walkspeed: 0.5
+  runspeed: 1.5
+  dodgespeed: 4
   jumpForce: 7
   rotationSpeed: 10
+  grounded: 1
   groundLayers:
     serializedVersion: 2
     m_Bits: 1
+  handTransform: {fileID: 0}
+  aimTransform: {fileID: 0}
+  baseHP: 250
+  additionalHP: 0
+  maxHP: 0
+  currentHP: 90
+  baseSP: 100
+  additionalSP: 0
+  maxSP: 0
+  currentSP: 80
+  baseSH: 170
+  additionalSH: 0
+  maxSH: 0
+  currentSH: 170
+  baseCost: 4
+  additionalCost: 0
+  maxCost: 0
+  currentCost: 4
+  baseHackper: 0
+  additionalHackper: 0
+  maxHackper: 0
+  currentHand: -1
 --- !u!1 &8087464316084970363
 GameObject:
   m_ObjectHideFlags: 0
@@ -5620,3 +5709,4 @@ SceneRoots:
   - {fileID: 7360676513916652430}
   - {fileID: 1016789171}
   - {fileID: 1805114989}
+  - {fileID: 1213058943}
