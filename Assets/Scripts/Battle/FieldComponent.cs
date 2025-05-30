@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 namespace Battle
 {
@@ -13,10 +12,10 @@ namespace Battle
             _commander?.Dispose();
             _commander = type switch
             {
-                CommanderType.Near => new NearCommander(FieldRadius,transform.position),
-                CommanderType.Random => new RandomCommander(FieldRadius, transform.position),
-                CommanderType.NearStop => new NearStopCommander(FieldRadius, transform.position),
-                _ => new NearCommander(FieldRadius, transform.position)
+                CommanderType.Near => new NearCommander(Width,Height, pivot),
+                CommanderType.Random => new RandomCommander(Width, Height, pivot),
+                CommanderType.NearStop => new NearStopCommander(Width, Height, pivot),
+                _ => new NearCommander(Width, Height, pivot)
             };
         }
         private CommanderType _preType;
@@ -35,28 +34,39 @@ namespace Battle
             }
         }
 
-        [Range(1, 100)] public int FieldRadius = 1;
+        [Min(1)] public int Width = 1;
+        [Min(1)] public int Height = 1;
+        [Min(1)] public int CellSize = 1;
         private Commander<byte> _commander;
 
         public void UpdateCommand()
         {
             _commander.UpdateCommand();
         }
-        private void Awake()
+        void Awake()
         {
+            Initialize();
             ChangeCommander(type);
         }
-        private void OnDrawGizmos()
+        Vector3 cell;
+        Vector3 pivot;
+        void Initialize()
         {
-            for (int i = -FieldRadius; i < FieldRadius; i++)
+            cell = (Vector3.right + Vector3.forward) * CellSize + Vector3.up * 0.2f;
+            pivot = transform.position
+                          + new Vector3(cell.x / 2f, cell.y / 2, cell.z / 2f);
+        }
+        void OnDrawGizmos()
+        {
+            Gizmos.color = Color.yellow;
+
+            for (int z = 0; z < Height; z++)
             {
-                for (int j = -FieldRadius; j < FieldRadius; j++)
+                for (int x = 0; x < Width; x++)
                 {
-                    var pos = transform.position;
-                    pos.x += i;
-                    pos.z += j;
-                    Gizmos.color = Color.black;
-                    Gizmos.DrawWireCube(pos, Vector3.one + Vector3.down * 0.9f);
+                    Vector3 offset = new Vector3(x * CellSize, 0, z * CellSize);
+                    Vector3 cellCenter = pivot + offset;
+                    Gizmos.DrawWireCube(cellCenter, cell);
                 }
             }
         }

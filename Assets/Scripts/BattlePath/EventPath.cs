@@ -18,6 +18,7 @@ namespace BattlePath
         public AnimationPath3 _path;
         public Color _eventType = Color.yellow;
         [SerializeField] private ScriptableObject _eventObject;
+        [SerializeField] private UnityEvent _Testevent;
 
         public override void DrawGizmos()
         {
@@ -32,6 +33,7 @@ namespace BattlePath
         public override void InvokeEvent()
         {
             Debug.Log($"Invoke Event!! Time : {t} ");
+            _Testevent.Invoke();
         }
     }
 }

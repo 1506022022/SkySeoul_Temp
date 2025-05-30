@@ -10,18 +10,18 @@ namespace Battle
     public abstract class Commander<T> : IDisposable
     {
         private readonly T _EMPTY;
-        private readonly Field<T> _field;
+        private readonly FieldBase<T> _field;
         private readonly List<Henchmen> _henchmens;
         private readonly Func<Henchmen, T> _generateElement;
 
-        protected abstract void CalculateNextPosition(in Field<T> field, in List<Vector2Int> goTo, Vector2Int currentIndex, out Vector2Int nextIndex);
+        protected abstract void CalculateNextPosition(in FieldBase<T> field, in List<Vector2Int> goTo, Vector2Int currentIndex, out Vector2Int nextIndex);
         protected abstract void SetGenerateTFunc(out Func<Henchmen, T> generateFunc);
         protected abstract void SetEmptyValue(out T empty);
-        protected abstract void GetGoToList(in Field<T> field, out List<Vector2Int> Index);
+        protected abstract void GetGoToList(in FieldBase<T> field, out List<Vector2Int> Index);
 
-        public Commander(int radius, Vector3 pivot)
+        public Commander(int width, int height, Vector3 pivot)
         {
-            _field = new Field<T>(radius, pivot);
+            _field = new FieldBase<T>(width, height, pivot);
             _henchmens = new List<Henchmen>();
 
             Henchmen.OnSpawnEvent += AddHenchmen;
@@ -80,60 +80,33 @@ namespace Battle
             _field.Reset();
             foreach (var henchmen in _henchmens.ToList())
             {
-                if (IsOutOfRange(henchmen.Position - _field.Pivot, _field.Radius))
+                if (IsOutOfRange(henchmen.Position - _field.Pivot, _field.Height))
                 {
                     FreeHenchmen(henchmen);
                     continue;
                 }
 
-                var index = ConvertToInedx(henchmen.Position-_field.Pivot, _field.Radius);
-                _field.Array[index.y, index.x] = _generateElement(henchmen);
+                var index = ConvertToInedx(henchmen.Position, _field);
+                _field.Array[index.y + index.x] = _generateElement(henchmen);
             }
         }
 
-        List<GameObject> PlayerPoint = new();
-        List<GameObject> MonsterPoint = new();
         private void GiveCommand()
         {
-            _henchmens.OrderBy(x => ConvertToInedx(x.Position-_field.Pivot, _field.Radius));
+            _henchmens.OrderBy(x => ConvertToInedx(x.Position, _field));
             GetGoToList(in _field, out var goTo);
-            //
-            foreach (var a in PlayerPoint)
-            {
-                GameObjectChace<GameObject>.GetPool(Resources.Load<GameObject>("Player Point")).Release(a);
-            }
-            PlayerPoint.Clear();
-            foreach (var a in MonsterPoint)
-            {
-                GameObjectChace<GameObject>.GetPool(Resources.Load<GameObject>("Monster Point")).Release(a);
-            }
-            MonsterPoint.Clear();
-            foreach (var target in goTo)
-            {
-                var arrow = GameObjectChace<GameObject>.GetPool(Resources.Load<GameObject>("Player Point")).Get();
-                arrow.transform.position = ConvertToPosition(target, _field.Radius, 1.5f) + _field.Pivot;
-                PlayerPoint.Add(arrow);
-            }
-            //
 
             foreach (var henchmen in _henchmens)
             {
-                var currentIndex = ConvertToInedx(henchmen.Position - _field.Pivot, _field.Radius);
+                if (henchmen.Team is not Team.Monster) continue;
+
+                var currentIndex = ConvertToInedx(henchmen.Position, _field);
                 CalculateNextPosition(in _field, in goTo, currentIndex, out var nextIndex);
 
-                _field.Array[currentIndex.y, currentIndex.x] = _EMPTY;
-                _field.Array[nextIndex.y, nextIndex.x] = _generateElement(henchmen);
+                _field.Array[currentIndex.y + currentIndex.x] = _EMPTY;
+                _field.Array[nextIndex.y + nextIndex.x] = _generateElement(henchmen);
 
-                CommandMove(henchmen, ConvertToPosition(nextIndex, _field.Radius, henchmen.Position.y) + _field.Pivot);
-                // 
-                if (henchmen.Team is not Team.Monster)
-                {
-                    continue;
-                }
-                var arrow = GameObjectChace<GameObject>.GetPool(Resources.Load<GameObject>("Monster Point")).Get();
-                arrow.transform.position = ConvertToPosition(nextIndex, _field.Radius, 1.5f) + _field.Pivot;
-                MonsterPoint.Add(arrow);
-                //
+                CommandMove(henchmen, ConvertToPosition(nextIndex, _field));
             }
         }
         public void Dispose()

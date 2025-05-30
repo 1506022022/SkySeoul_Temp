@@ -4,33 +4,42 @@ using UnityEngine;
 
 namespace Battle
 {
-    public class CharacterMovement
+    public interface IMovement
+    {
+        public bool IsGrounded { get; }
+        public void UpdateGravity();
+    }
+
+
+    public class CharacterMovement : IMovement
     {
         public float MoveSpeed = 2f;
-        public float JumpPower = 5f;
-        public float SlidPower = 1f;
-        private readonly Character _character;
-        private readonly CharacterController _controller;
-        private Coroutine _slidingCoroutine;
+        public float JumpPower = 4f;
+        public float SlidePower = 1f;
+        private readonly Character character;
+        private readonly CharacterController controller;
+        private Coroutine slidingCoroutine;
 
-        public CharacterMovement(Character character, CharacterController controller)
+        public bool IsGrounded => controller?.isGrounded ?? true;
+
+        public CharacterMovement(Character character, Transform transform)
         {
-            _character = character;
-            _controller = controller;
+            this.character = character;
+            if (!transform.TryGetComponent(out controller)) controller = transform.AddComponent<CharacterController>();
             AddEvent();
         }
         private void AddEvent()
         {
-            _character.OnMove += DoWalk;
-            _character.OnRun += DoRun;
-            _character.OnJump += DoJump;
-            _character.OnSlide += DoSliding;
-            _character.OnSlideEnd += () => CoroutineRunner.instance.StopCoroutine(_slidingCoroutine);
-            _character.OnSlideEnd += StopVelocity;
+            character.OnMove += DoWalk;
+            character.OnRun += DoRun;
+            character.OnJump += DoJump;
+            character.OnSlide += DoSliding;
+            character.OnSlideEnd += () => CoroutineRunner.instance.StopCoroutine(slidingCoroutine);
+            character.OnSlideEnd += StopVelocity;
         }
         private void SetDirOfForward(ref Vector3 dir)
         {
-            var @base = _controller.transform;
+            var @base = controller.transform;
             dir = @base.forward * dir.z + @base.right * dir.x;
             dir.y = 0;
             dir = dir.normalized;
@@ -38,42 +47,42 @@ namespace Battle
         private void DoWalk(Vector3 dir)
         {
             SetDirOfForward(ref dir);
-            _controller.Move(dir * MoveSpeed * Time.fixedDeltaTime);
+            controller.SimpleMove(dir * MoveSpeed);
 
         }
         private void DoRun(Vector3 dir)
         {
             SetDirOfForward(ref dir);
-            _controller.Move(dir * MoveSpeed * 1.5f * Time.fixedDeltaTime);
+            controller.SimpleMove(dir * MoveSpeed * 1.5f);
         }
         private void DoJump()
         {
-            _controller.Move(Vector3.up * JumpPower);
+            controller.Move(Vector3.up * JumpPower);
         }
         public void UpdateGravity()
         {
-            _controller.Move((Physics.gravity) * Time.fixedDeltaTime);
+            controller.Move((Physics.gravity) * Time.fixedDeltaTime);
         }
         private void DoSliding()
         {
-            if (_slidingCoroutine != null)
+            if (slidingCoroutine != null)
             {
-                CoroutineRunner.instance.StopCoroutine(_slidingCoroutine);
+                CoroutineRunner.instance.StopCoroutine(slidingCoroutine);
             }
-            _slidingCoroutine = CoroutineRunner.instance.StartCoroutine(LerpForward());
+            slidingCoroutine = CoroutineRunner.instance.StartCoroutine(LerpForward());
         }
         private IEnumerator LerpForward()
         {
-            var forward = _controller.velocity.normalized;
+            var forward = controller.velocity.normalized;
             while (true)
             {
-                _controller.Move(forward * Time.fixedDeltaTime * SlidPower);
+                controller.Move(forward * Time.fixedDeltaTime * SlidePower);
                 yield return new WaitForFixedUpdate();
             }
         }
         private void StopVelocity()
         {
-            _controller.Move(Vector3.zero);
+            controller.Move(Vector3.zero);
         }
     }
 }

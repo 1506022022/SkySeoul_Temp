@@ -6,21 +6,14 @@ namespace Battle
     {
         private Vector3 _preDir;
 
-        public HanZoomInAnimator(Character character, Animator animator) : base(character, animator)
-        {
-        }
         private void DoCalmDown()
         {
-            _character.CalmDown();
+            character.CalmDown();
         }
         protected override void OnAttack()
         {
             SetTrigger(STATE_ATTACK, 1);
             AwaitExitEvent(STATE_ATTACK, 1, DoCalmDown);
-        }
-        protected override void OnCalmDown()
-        {
-            SetTrigger(PARAMETERS_CALMDOWN, 0);
         }
         protected override void OnCancel()
         {
@@ -35,15 +28,6 @@ namespace Battle
         {
             SetTrigger(STATE_HIT, 1);
             AwaitExitEvent(STATE_HIT, 1, DoCalmDown);
-        }
-        protected override void OnIdle()
-        {
-        }
-        protected override void OnInteraction()
-        {
-        }
-        protected override void OnJump()
-        {
         }
         protected override void OnLand()
         {
@@ -64,12 +48,6 @@ namespace Battle
             SetFloat(_stringToHash[PARAMETERS_SPEED], 0f, 1f);
             UpdateDirection(dir);
         }
-        protected override void OnSlide()
-        {
-        }
-        protected override void OnSlideEnd()
-        {
-        }
         protected override void OnStandUp()
         {
             SetBoolean(PARAMETERS_INTERACTION, false);
@@ -89,7 +67,7 @@ namespace Battle
         }
         protected override void OnUse()
         {
-            _animator.Play(STATE_ATTACK, 1);
+            animator.Play(STATE_ATTACK, 1);
         }
         protected override void OnUnuse()
         {

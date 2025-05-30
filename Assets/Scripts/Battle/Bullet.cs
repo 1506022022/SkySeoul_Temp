@@ -4,12 +4,16 @@ using Util;
 
 namespace Battle
 {
-    public class Bullet
+    public interface IBullet
+    {
+        public void OnFire();
+    }
+    public class Bullet : IBullet
     {
         private readonly AttackBox _attackBox;
         private readonly Transform _gun;
         private readonly Transform _actor;
-        private float _maxDistance = 100f;
+        public float MaxDistance = 100f;
         public event Action<HitBoxCollision> OnHit;
 
         public Bullet(Transform gun, Transform actor)
@@ -23,7 +27,7 @@ namespace Battle
         }
         public void OnFire()
         {
-            var hits = Physics.RaycastAll(_gun.position, GetShootDir(), _maxDistance);
+            var hits = Physics.RaycastAll(GetAim());
             _attackBox.OpenAttackWindow();
             Enurmerator.InvokeFor(hits, DoHit);
             DrawBulletLine();
@@ -37,21 +41,19 @@ namespace Battle
 
             _attackBox.CheckCollision(new HitBoxCollision() { Attacker = _attackBox, Victim = victim.HitBox, HitPoint = hit.point });
         }
-        private void DrawHitLine(HitBoxCollision collision)
+        void DrawHitLine(HitBoxCollision collision)
         {
-            Debug.DrawRay(_gun.transform.position, collision.HitPoint - _gun.transform.position, Color.red, 1f);
+            var ray = GetAim();
+            Debug.DrawRay(ray.origin, collision.HitPoint - ray.origin, Color.red, 1f);
         }
-        private void DrawBulletLine()
+        void DrawBulletLine()
         {
-            Debug.DrawRay(_gun.transform.position, GetShootDir() * _maxDistance, Color.yellow, 1f);
+            var ray = GetAim();
+            Debug.DrawRay(ray.origin, ray.direction, Color.yellow, 1f);
         }
-        private Vector3 GetShootDir()
+        private Ray GetAim()
         {
-            Vector3 gunPosition = _gun.position;
-            Vector3 screenCenter = new Vector3(0.5f, 0.5f, Camera.main.nearClipPlane);
-            Vector3 worldCenter = Camera.main.ScreenToWorldPoint(screenCenter);
-            Vector3 directionToCenter = gunPosition - worldCenter;
-            return directionToCenter.normalized;
+            return new Ray(Camera.main.transform.position, Camera.main.transform.forward * MaxDistance);
         }
     }
 }

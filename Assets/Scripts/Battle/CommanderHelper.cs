@@ -32,14 +32,15 @@ namespace Battle
                 index.y < 0;
         }
 
-        public static Vector2Int ConvertToInedx(Vector3 position, int radius)
+        public static Vector2Int ConvertToInedx<T>(Vector3 position, FieldBase<T> field)
         {
-            return new((int)position.x + radius, (int)position.z + radius);
+            Vector2Int index = new((int)(position.x - field.Pivot.x), (int)(position.z - field.Pivot.z));
+            return index;
         }
 
-        public static Vector3 ConvertToPosition(Vector2Int index, int radius, float y)
+        public static Vector3 ConvertToPosition<T>(Vector2Int index, FieldBase<T> field)
         {
-            return new(index.x - radius, y, index.y - radius);
+            return field.Pivot + new Vector3(index.x, 0, index.y);
         }
 
         public static int GetDirIndex(int a, int b)

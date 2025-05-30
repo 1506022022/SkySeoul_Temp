@@ -17,7 +17,7 @@ namespace Battle
     };
 
 
-        public NearCommander(int radius, Vector3 pivot) : base(radius, pivot)
+        public NearCommander(int width, int height, Vector3 pivot) : base(width, height, pivot)
         {
         }
 
@@ -49,29 +49,24 @@ namespace Battle
         }
 
 
-        protected override void GetGoToList(in Field<byte> field, out List<Vector2Int> Index)
+        protected override void GetGoToList(in FieldBase<byte> field, out List<Vector2Int> Index)
         {
             Index = new List<Vector2Int>();
-            for (byte i = 0; i < field.Radius * 2 + 1; i++)
+
+            var player = GameObject.FindAnyObjectByType<ZoomCharacterComponent>();
+            if (player != null)
             {
-                for (byte j = 0; j < field.Radius*2+1; j++)
-                {
-                    if (field.Array[i, j] == (byte)Team.Player)
-                    {
-                        Index.Add(new Vector2Int(j, i));
-                    }
-                }
+                var playerIndex = ConvertToInedx(player.transform.position, field);
+                Index.Add(playerIndex);
+                return;
             }
 
-            if (Index.Count == 0)
-            {
-                Index.Add(new Vector2Int(0, 0));
-                Index.Add(new Vector2Int(field.Radius, field.Radius));
-                Index.Add(new Vector2Int(field.Radius * 2, field.Radius * 2));
-            }
+            Index.Add(new Vector2Int(0, 0));
+            Index.Add(new Vector2Int(field.Height, field.Height));
+            Index.Add(new Vector2Int(field.Height * 2, field.Height * 2));
         }
 
-        protected override void CalculateNextPosition(in Field<byte> field, in List<Vector2Int> goTo, Vector2Int currentIndex, out Vector2Int nextIndex)
+        protected override void CalculateNextPosition(in FieldBase<byte> field, in List<Vector2Int> goTo, Vector2Int currentIndex, out Vector2Int nextIndex)
         {
             var me = currentIndex;
             var list = goTo.OrderBy(x => Vector2Int.Distance(x, me));
@@ -82,13 +77,13 @@ namespace Battle
                 foreach (var intt in View180)
                 {
                     var dir = DIRS[GetDirIndex(pos, intt)];
-                    if (IsOutOfRange(new Vector3(currentIndex.x - field.Radius + dir.x, 0, currentIndex.y - field.Radius + dir.y), field.Radius))
+                    if (IsOutOfRange(new Vector3(currentIndex.x - field.Height + dir.x, 0, currentIndex.y - field.Height + dir.y), field.Height))
                     {
                         continue;
                     }
                     var ind = currentIndex.x + dir.x;
                     var inc = currentIndex.y + dir.y;
-                    if (field.Array[ind, inc] != 0)
+                    if (field.Array[ind + inc] != 0)
                     {
                         continue;
                     }

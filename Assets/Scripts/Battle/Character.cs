@@ -10,20 +10,21 @@ namespace Battle
     {
         None = 0,
         Walk = 1 << 0,
-        Grounded = 1 << 1,
-        Crouch = 1 << 2,
-        Weapon = 1 << 3,
-        Hit = 1 << 4,
-        Attack = 1 << 5,
-        Guard = 1 << 6,
-        Down = 1 << 7,
-        Interaction = 1 << 8,
-        Cancel = 1 << 9,
-        Land = 1 << 10,
-        Idle = 1 << 11,
-        Slide = 1 << 12,
-        Jump = 1 << 13,
-        StandUp = 1 << 14
+        Run = 1 << 1,
+        Grounded = 1 << 2,
+        Crouch = 1 << 3,
+        Weapon = 1 << 4,
+        Hit = 1 << 5,
+        Attack = 1 << 6,
+        Guard = 1 << 7,
+        Down = 1 << 8,
+        Interaction = 1 << 9,
+        Cancel = 1 << 10,
+        Land = 1 << 11,
+        Idle = 1 << 12,
+        Slide = 1 << 13,
+        Jump = 1 << 14,
+        StandUp = 1 << 15
     }
     public class Character
     {
@@ -146,7 +147,6 @@ namespace Battle
             {
                 return false;
             }
-
             AddFlag(ref BodyState, BodyState.Attack);
             RemoveFlag(ref BodyState, BodyState.Idle);
             OnAttack?.Invoke();
@@ -170,7 +170,6 @@ namespace Battle
             {
                 return false;
             }
-
             RemoveFlag(ref BodyState, BodyState.Attack |
                                       BodyState.Guard |
                                       BodyState.Land |

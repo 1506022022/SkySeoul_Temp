@@ -5,32 +5,32 @@ namespace Battle
 {
     public class RandomCommander : Commander<byte>
     {
-        public RandomCommander(int radius, Vector3 pivot) : base(radius, pivot)
+        public RandomCommander(int width, int height, Vector3 pivot) : base(width, height, pivot)
         {
         }
 
-        protected override void GetGoToList(in Field<byte> field, out List<Vector2Int> Index)
+        protected override void GetGoToList(in FieldBase<byte> field, out List<Vector2Int> Index)
         {
             Index = new List<Vector2Int>()
         {
             new(0, 0),
-            new(field.Radius, field.Radius),
-            new(field.Radius * 2, field.Radius * 2)
+            new(field.Height, field.Height),
+            new(field.Height * 2, field.Height * 2)
         };
 
         }
 
-        protected override void CalculateNextPosition(in Field<byte> field, in List<Vector2Int> goTo, Vector2Int currentIndex, out Vector2Int nextIndex)
+        protected override void CalculateNextPosition(in FieldBase<byte> field, in List<Vector2Int> goTo, Vector2Int currentIndex, out Vector2Int nextIndex)
         {
-            if (field.Radius < 1)
+            if (field.Height < 1)
             {
                 nextIndex = currentIndex;
-                Debug.LogError($"{DM_ERROR.OUT_OF_RANGE} range : {field.Radius}");
+                Debug.LogError($"{DM_ERROR.OUT_OF_RANGE} range : {field.Height}");
                 return;
             }
 
-            var x = UnityEngine.Random.Range(0, field.Radius);
-            var y = UnityEngine.Random.Range(0, field.Radius);
+            var x = UnityEngine.Random.Range(0, field.Width);
+            var y = UnityEngine.Random.Range(0, field.Height);
             nextIndex = new(x, y);
         }
 

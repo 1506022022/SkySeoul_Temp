@@ -98,35 +98,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49daf16dcbdd5134987417faa7e2be4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _onFire:
+  maxDistance: 100
+  onFire:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5469239356406453720}
-        m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
-        m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 6045683737902745138}
-        m_TargetAssemblyTypeName: AttackBoxComponent, Assembly-CSharp
-        m_MethodName: OpenAttackWindow
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  _lerp: 0
-  _attackClip: {fileID: 0}
+      m_Calls: []
+  attackEffect: {fileID: 5501803990558534767, guid: 1910737c4adb99941b92abcd4b3dcbda,
+    type: 3}
 --- !u!1 &7488231629218667201
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,25 +4,18 @@ namespace Battle
 {
     public class HanZoomOutAnimator : CharacterAnimator
     {
-        public HanZoomOutAnimator(Character character, Animator animator) : base(character, animator)
-        {
-        }
         private void DoCalmDown()
         {
-            _character.CalmDown();
+            character.CalmDown();
         }
         private void DoStandUp()
         {
-            _character.DoStandUp();
+            character.DoStandUp();
         }
         protected override void OnAttack()
         {
             SetTrigger(STATE_ATTACK, 1);
             AwaitExitEvent(STATE_ATTACK, 1, DoCalmDown);
-        }
-        protected override void OnCalmDown()
-        {
-            SetTrigger(PARAMETERS_CALMDOWN, 0);
         }
         protected override void OnCancel()
         {
@@ -101,7 +94,7 @@ namespace Battle
 
         protected override void OnUse()
         {
-            _animator.Play(STATE_IDLE, 1);
+            animator.Play(STATE_IDLE, 1);
         }
         protected override void OnUnuse()
         {
