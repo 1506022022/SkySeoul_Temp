@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c1b8a485eecdd54b9f077ba7b767bb6, type: 3}
   m_Name: ModeSet
   m_EditorClassIdentifier: 
-  MapType: 4
+  MapType: 3
   MapID: 0
   UserID: 0
   PlayableCharacterID: 2000000000

@@ -1,0 +1,2 @@
+{"HeaderType":"FieldData","Name":"Field","Position":{"x":-63.91999816894531,"y":1.8799972534179688,"z":17.110000610351564},"Rotation":{"x":0.0,"y":0.0,"z":0.0},"Size":{"x":5,"y":5,"z":5}}
+{"HeaderType":"ActorData","Name":"2100000000","HP":13,"Team":{"serializedVersion":"2","m_Bits":6},"Position":{"x":2.740000009536743,"y":0.0,"z":1.2200000286102296},"Rotation":{"x":0.0,"y":0.0,"z":0.0},"EnterDuration":3.0,"ExitDuration":5.0}

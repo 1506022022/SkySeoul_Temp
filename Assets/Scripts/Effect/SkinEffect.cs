@@ -27,7 +27,7 @@ namespace Effect
                 Debug.LogWarning(DM_WARNING.BUSY);
                 return;
             }
-            Enurmerator.InvokeFor(materials,
+            Enumerator.InvokeFor(materials,
                 (m) => CoroutineRunner.instance.StartCoroutine(PlayEffectRoutineSafe(m)));
         }
         private IEnumerator PlayEffectRoutineSafe(Material material)

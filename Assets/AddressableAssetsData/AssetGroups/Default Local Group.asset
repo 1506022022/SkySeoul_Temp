@@ -47,17 +47,23 @@ MonoBehaviour:
     m_SerializedLabels:
     - FieldData
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9b69823448e650f4ca13c0509b5599ad
-    m_Address: Assets/Prefabs/CharacterStruct/2200000000.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - IEnemy
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1258c92756297be43a471285ffac058a
     m_Address: Assets/JsonData/Map/A-1.Json
     m_ReadOnly: 0
     m_SerializedLabels:
     - FieldData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1c329a8df949c6e43aad647ab98aec7a
+    m_Address: Assets/JsonData/Map/test.Json
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - FieldData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d4078f8b6394e234b89dee57f9bbefac
+    m_Address: Assets/Prefabs/Skill/2300000000.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7107e067d9f312f4998c197892b1440a, type: 2}

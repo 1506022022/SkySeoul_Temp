@@ -12,12 +12,14 @@ namespace Battle
         IMovement characterMovement;
         internal BodyState State => character.BodyState;
         [SerializeField] Animator animator;
+
         [Header("Battle")]
         public float MoveSpeed = 3f;
         public float JumpPower = 5f;
         public float SlidePower = 3f;
         [SerializeField] WeaponComponent weapon;
         [field: SerializeField] public HitBoxComponent Body { get; private set; }
+
         [Header("Debug")]
         [SerializeField] TextMeshProUGUI ui;
         public readonly Statistics HP = new(10);
@@ -52,7 +54,7 @@ namespace Battle
             else
             {
                 SetAnimator(new EmptyAnimator());
-                SetController(new EmptyJoycon());
+                SetController(new EmptyJoycon(this));
                 SetMovement(new EmptyMovement());
             }
         }
@@ -72,6 +74,12 @@ namespace Battle
         {
             if (movement == characterMovement) return;
             characterMovement = movement;
+        }
+        public void SetTeam(int team)
+        {
+            gameObject.layer = team;
+            Body.gameObject.layer = team;
+            weapon.gameObject.layer = team;
         }
         public void DoAttack()
         {

@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using Util;
 
 namespace Battle
 {
@@ -16,16 +17,18 @@ namespace Battle
         {
             base.Initialize(character, actor);
             bullet = new Bullet(transform, actor);
-            onFire.AddListener(bullet.OnFire);
         }
         protected override void DoAttack()
         {
-            StartCoroutine(DelayAction(onFire.Invoke, attackData.PreDelay));
+            Debug.Log(nameof(DoAttack));
+            StartCoroutine(DelayAction(bullet.OnFire, attackData.PreDelay));
         }
         private IEnumerator DelayAction(UnityAction action, float delay)
         {
             yield return new WaitForSeconds(delay);
+            Debug.Log(nameof(DelayAction));
             action?.Invoke();
+            onFire.Invoke();
         }
     }
 }

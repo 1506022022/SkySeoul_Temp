@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AI;
+using Entity;
 
 namespace TopDown
 {
@@ -22,6 +22,9 @@ namespace TopDown
         CharacterComponent playable;
         List<Loader> loaders;
         FieldComponent current;
+
+        readonly Dictionary<CharacterComponent, float> deathDuration = new();
+
 
         public BattleMode()
         {
@@ -63,12 +66,15 @@ namespace TopDown
                     var actor = GameObject.Instantiate(enemyDB.LoadedResources[actorData.Name]);
                     actor.transform.position = field.transform.position + actorData.Position;
                     actor.transform.eulerAngles = actorData.Rotation;
-                    if (actor is IEnemy)
-                    {
-                        var agent = actor.GetComponent<NavMeshAgent>();
-                        field.Add((MonsterComponent)actor);
-                    }
+                    actor.HP.Initialize(actorData.HP, actorData.HP);
+                    actor.SetTeam(actorData.Team);
+                    deathDuration.Add(actor, actorData.ExitDuration);
+                    if (actor is IEnemy) field.Add((MonsterComponent)actor);
                     OnBirthCharacter(actor);
+                }
+                if (instance is Barricade barricade)
+                {
+
                 }
                 await UniTask.Yield();
             }
@@ -104,7 +110,9 @@ namespace TopDown
         void DisposeCharacter(CharacterComponent character)
         {
             battle.DisposeCharacter(character);
-            GameObject.Destroy(character.gameObject, 3f);
+            deathDuration.TryGetValue(character, out var delay);
+            delay = Mathf.Max(delay, 3f);
+            GameObject.Destroy(character.gameObject, delay);
         }
         void OnLoaded()
         {
@@ -117,11 +125,12 @@ namespace TopDown
             var name = MapType.Lobby.ToString() + "Loader";
             loader = LoaderFactory.Load<ILoad>(name, name);
             loaders = new List<Loader>();
-            loaders.Add(new SceneLoader(MapType.BattleMap.ToString()));
             loaders.Add(Loader<TextAsset, TextAsset>.GetLoader(nameof(FieldData)));
             loaders.Add(Loader<GameObject, FieldComponent>.GetLoader(nameof(FieldComponent)));
             loaders.Add(Loader<GameObject, CharacterComponent>.GetLoader(nameof(IEnemy)));
             loaders.Add(Loader<GameObject, CharacterComponent>.GetLoader(nameof(IPlayable)));
+            loaders.Add(Loader<GameObject, SkillComponent>.GetLoader(nameof(Skill)));
+            loaders.Add(new SceneLoader(MapType.BattleMap.ToString()));
             loader.Initialize(loaders);
             loader.Load();
             loader.OnLoaded += OnLoaded;

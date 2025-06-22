@@ -68,28 +68,36 @@ namespace Battle
 
         void Update()
         {
-            x -= Mathf.Clamp(Input.GetAxis("Mouse X"), -1, 1) * MouseSensitivity;
-            y += Mathf.Clamp(Input.GetAxis("Mouse Y"), -1, 1) * MouseSensitivity;
-            distance -= Mathf.Clamp(Input.GetAxis("Mouse ScrollWheel"), -1, 1) * MouseSensitivity;
+            float mouseX = Input.GetAxis("Mouse X");
+            float mouseY = Input.GetAxis("Mouse Y");
+            float scroll = Input.GetAxis("Mouse ScrollWheel");
 
-            distance = Mathf.Clamp(distance, minDistance, maxDistance);
+            x += mouseX * MouseSensitivity;
+            y -= mouseY * MouseSensitivity;
             y = Mathf.Clamp(y, yMinLimit, yMaxLimit);
-            x = Mathf.Clamp(x, -360f, 360f);
-            x = x == -360f || x == 360f ? 0f : x;
 
-            Debug.Log(x);
-            float radianX = x * Mathf.Deg2Rad;
-            float radianY = (y + 3) * Mathf.Deg2Rad;
+            distance -= scroll * MouseSensitivity;
+            distance = Mathf.Clamp(distance, minDistance, maxDistance);
 
-            float posX = _body.position.x + distance * Mathf.Sin(radianY) * Mathf.Cos(radianX);
-            float posY = _body.position.y + distance * Mathf.Cos(radianY);
-            float posZ = _body.position.z + distance * Mathf.Sin(radianY) * Mathf.Sin(radianX);
+            // 회전 쿼터니온 생성 (Euler → Quaternion)
+            Quaternion rotation = Quaternion.Euler(y, x, 0);
 
-            _currentView.transform.position = new Vector3(posX, posY, posZ);
+            // 위치 계산 (캐릭터 주변 원 궤도 상 위치)
+            Vector3 offset = rotation * new Vector3(0, 0, -distance);
+            _currentView.transform.position = _body.position + offset;
 
-            Vector3 dir = (_body.position - _currentView.transform.position).normalized;
-            dir.y = 0;
-            _body.forward = dir;
+            // 카메라는 캐릭터 바라보도록
+            _currentView.transform.LookAt(_body.position + Vector3.up * 1.5f);
+
+            // 캐릭터는 카메라 바라보는 방향으로 회전하되, 수평만
+            Vector3 direction = (_currentView.transform.position - _body.position);
+            direction.y = 0f;
+
+            if (direction.sqrMagnitude > 0.001f)
+            {
+                Quaternion targetRot = Quaternion.LookRotation(-direction);
+                _body.rotation = Quaternion.Slerp(_body.rotation, targetRot, Time.deltaTime * 10f);
+            }
         }
         public void UpdateView()
         {
