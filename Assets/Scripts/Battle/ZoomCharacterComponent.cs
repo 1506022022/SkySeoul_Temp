@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Battle
 {
-    public class ZoomCharacterComponent : CharacterComponent 
+    public class ZoomCharacterComponent : CharacterComponent , IPlayable
     {
         private ShootingView view;
         [Header("View")]

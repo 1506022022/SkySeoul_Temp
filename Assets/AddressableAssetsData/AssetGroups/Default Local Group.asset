@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 0276e67675016dd4abdd335bcf390490
+  m_SerializeEntries:
+  - m_GUID: 2b2a3c1b59d3a3940a43b47c949fc2d1
+    m_Address: "Assets/0. \uC791\uC5C5/\uC804\uD22C/2000000000.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - IPlayable
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e890fd5f4ff565409741ea52f55e797
+    m_Address: "Assets/0. \uC791\uC5C5/\uC804\uD22C/2100000000.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - IEnemy
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ec52cec67ef256d409f939a0a966620c
+    m_Address: "Assets/0. \uC791\uC5C5/\uC804\uD22C/Field.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - FieldComponent
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa033f9620f2a1143b4854b769ddd548
+    m_Address: "Assets/0. \uC791\uC5C5/\uC804\uD22C/EntryPoint.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - FieldComponent
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 53967166db551ed4ebdf5b8d41910f34
+    m_Address: Assets/JsonData/Map/EntryPoint.Json
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - FieldData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9b69823448e650f4ca13c0509b5599ad
+    m_Address: Assets/Prefabs/CharacterStruct/2200000000.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - IEnemy
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1258c92756297be43a471285ffac058a
+    m_Address: Assets/JsonData/Map/A-1.Json
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - FieldData
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 7107e067d9f312f4998c197892b1440a, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: ccd21eb794630a541961729bee6f10b8, type: 2}
+    - {fileID: 11400000, guid: e538a15ba2f9d5c4398dbcdce8266aec, type: 2}

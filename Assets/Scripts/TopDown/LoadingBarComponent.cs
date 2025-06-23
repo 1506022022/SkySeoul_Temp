@@ -1,58 +1,67 @@
+using Cysharp.Threading.Tasks;
 using Microlight.MicroBar;
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
 namespace TopDown
 {
-    public class LoadingBarComponent : MonoBehaviour, ILoadManager
+    public class LoadingBarComponent : MonoBehaviour, ILoad
     {
         public event Action OnLoaded;
-        [SerializeField] private MicroBar bar;
-        [SerializeField] private TextMeshProUGUI loadingInfo;
-        public string LoadTarget;
-        [Min(3)] public float minDuration = 3.0f;
-
-        private void Awake()
-        {
-            bar.Initialize(1);
-            if (loadingInfo != null)
-            {
-                bar.OnCurrentValueChange += UpdateLoadingText;
-            }
-        }
-        private void UpdateLoadingText(MicroBar bar)
-        {
-            loadingInfo.text = $"{(string.IsNullOrEmpty(LoadTarget) ? "Now loading" : LoadTarget)} ({(int)(bar.HPPercent * 100):D3}/100)";
-            Debug.Log(loadingInfo.text);
-        }
+        [SerializeField] MicroBar bar;
+        [SerializeField] TextMeshProUGUI loadingInfo;
+        [SerializeField, Range(3, 30)] float minDuration;
+        readonly List<VisualLoader> resources = new();
+        float lastLoadTime;
         public void Load()
         {
-            StopAllCoroutines();
-            if (bar == null) return;
-            StartCoroutine(LoadRoutine());
+            if (resources.Count == 0)
+            {
+                OnLoaded?.Invoke();
+                return;
+            }
+            resources.First().Load();
+            lastLoadTime = Time.time;
         }
         public void Unload()
         {
-            GameObject.Destroy(gameObject);
-        }
-        private IEnumerator LoadRoutine()
-        {
-            gameObject.SetActive(true);
-            float t = 0;
-            bar.UpdateBar(0, true);
-
-            while (t < 1)
+            for (int i = 0; i < resources.Count; i++)
             {
-                t = Mathf.Clamp01(t + (Time.deltaTime / minDuration));
-                bar.UpdateBar(t);
-                yield return null;
+                resources[i].Unload();
+                resources[i].ClearCallback();
             }
-            yield return new WaitForSeconds(minDuration);
+            this.resources.Clear();
+        }
+        public void Initialize(List<Loader> resources)
+        {
+            Unload();
+            for (int i = 0; i < resources.Count; i++)
+            {
+                var resource = resources[i];
+                var loader = new VisualLoader();
+                this.resources.Add(loader);
+                loader.SetLoader(resource);
+                loader.SetLoadingBar(bar);
+                loader.SetInfoText(loadingInfo);
+            }
+
+            for (int i = 0; i < this.resources.Count; i++)
+            {
+                var loader = this.resources[i];
+                if (i == resources.Count - 1) loader.CallbackSuccessLoad += OnSuccess;
+                else loader.CallbackSuccessLoad += this.resources[i + 1].Load;
+            }
+        }
+        async void OnSuccess()
+        {
+            for (int i = 0; i < resources.Count; i++) resources[i].ClearCallback();
+            var waitting = (int)(Mathf.Max(lastLoadTime + minDuration - Time.time, 0) * 1000);
+            await UniTask.Delay(waitting);
             OnLoaded?.Invoke();
             gameObject.SetActive(false);
         }
     }
-
 }

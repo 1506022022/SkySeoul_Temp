@@ -10,7 +10,15 @@ namespace Battle
         public void UpdateGravity();
     }
 
+    public class EmptyMovement : IMovement
+    {
+        public bool IsGrounded => true;
 
+        public void UpdateGravity()
+        {
+            
+        }
+    }
     public class CharacterMovement : IMovement
     {
         public float MoveSpeed = 2f;

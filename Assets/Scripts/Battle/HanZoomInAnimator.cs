@@ -65,6 +65,10 @@ namespace Battle
             SetFloat(_stringToHash[PARAMETERS_VERTICAL], dir.z);
             _preDir = dir;
         }
+        protected override void OnDie()
+        {
+           Play(STATE_DIE);
+        }
         protected override void OnUse()
         {
             animator.Play(STATE_ATTACK, 1);

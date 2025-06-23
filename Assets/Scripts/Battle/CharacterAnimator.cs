@@ -7,6 +7,11 @@ using UnityEngine.Events;
 
 namespace Battle
 {
+    public class EmptyAnimator : CharacterAnimator
+    {
+
+    }
+
     public abstract class CharacterAnimator
     {
         protected const string STATE_ATTACK = "Attack";
@@ -19,6 +24,7 @@ namespace Battle
         protected const string STATE_FALL = "Fall";
         protected const string STATE_SLIDING = "Sliding";
         protected const string STATE_CROUCH = "Crouch";
+        protected const string STATE_DIE = "Die";
         protected const string PARAMETERS_CALMDOWN = "CalmDown";
         protected const string PARAMETERS_SPEED = "Speed";
         protected const string PARAMETERS_CROUCH = "Crouch";
@@ -49,6 +55,10 @@ namespace Battle
         protected virtual void OnInteraction() { }
         protected virtual void OnCalmDown() { }
         protected virtual void OnHit() { }
+        protected virtual void OnDie()
+        {
+        
+        }
         public void Initialize(Character character, Animator animator)
         {
             this.character = character;
@@ -63,6 +73,7 @@ namespace Battle
             _stringToHash.Add(STATE_CANCEL, Animator.StringToHash(STATE_CANCEL));
             _stringToHash.Add(STATE_FALL, Animator.StringToHash(STATE_FALL));
             _stringToHash.Add(STATE_SLIDING, Animator.StringToHash(STATE_SLIDING));
+            _stringToHash.Add(STATE_DIE, Animator.StringToHash(STATE_DIE));
             _stringToHash.Add(PARAMETERS_VERTICAL, Animator.StringToHash(PARAMETERS_VERTICAL));
             _stringToHash.Add(PARAMETERS_HORIZONTAL, Animator.StringToHash(PARAMETERS_HORIZONTAL));
             _stringToHash.Add(PARAMETERS_SPEED, Animator.StringToHash(PARAMETERS_SPEED));
@@ -78,6 +89,11 @@ namespace Battle
         {
             RemoveCharacterEvent();
             OnUnuse();
+        }
+
+        protected void Play(string name)
+        {
+            animator.Play(name);
         }
         protected void SetFloat(int parameter, float value, float duration = 0f)
         {
@@ -121,11 +137,13 @@ namespace Battle
         }
         bool IsSame(int exitState, int layer)
         {
+            if (animator == null) return true;
             var state = animator.GetCurrentAnimatorStateInfo(layer);
             return state.shortNameHash == exitState;
         }
         bool IsExit(int exitState, int layer)
         {
+            if (animator == null) return true;
             var state = animator.GetCurrentAnimatorStateInfo(layer);
             var outState = state.shortNameHash != exitState;
             var outRange = 1 <= state.normalizedTime;
@@ -157,6 +175,7 @@ namespace Battle
             character.OnInteraction += OnInteraction;
             character.OnCalmDown += OnCalmDown;
             character.OnHit += OnHit;
+            character.OnDead += OnDie;
         }
         void RemoveCharacterEvent()
         {
@@ -174,6 +193,7 @@ namespace Battle
             character.OnInteraction -= OnInteraction;
             character.OnCalmDown -= OnCalmDown;
             character.OnHit -= OnHit;
+            character.OnDead -= OnDie;
         }
     }
 }

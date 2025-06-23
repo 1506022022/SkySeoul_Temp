@@ -79,6 +79,10 @@ namespace Battle
             SetBoolean(PARAMETERS_INTERACTION, false);
             SetBoolean(PARAMETERS_CROUCH, false);
         }
+        protected override void OnDie()
+        {
+            SetTrigger(STATE_DIE, 0);
+        }
         private Vector3 _preDir;
         private void UpdateDirection(Vector3 dir)
         {

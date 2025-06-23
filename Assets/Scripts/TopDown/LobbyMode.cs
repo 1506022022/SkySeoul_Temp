@@ -1,66 +1,74 @@
 ﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace TopDown
 {
     public class LobbyMode : IGameMode
     {
         public event Action OnQuit;
-        private ModeSet modeSet;
-        private MyLoader<ISelectManager> resources;
-        private ISelectManager playerableCharacterSelecter;
-        private ISelectManager playMapSelecter;
-        private ISelectManager gameStartSelecter;
+        public event Action OnLoaded;
 
-        public void Initialize(ModeSet set)
+        ModeSet modeSet;
+        ISelect playerableCharacter;
+        ISelect playMap;
+        ISelect gameStart;
+        ILoad loader;
+
+        public void Load(ModeSet set)
         {
-            SetQuitEvent();
+            var name = MapType.Lobby.ToString() + "Loader";
+            loader = LoaderFactory.Load<ILoad>(name, name);
+            var list = new List<Loader>();
+            list.Add(new SceneLoader(MapType.Lobby.ToString()));
+            list.Add(Loader<AudioClip, AudioClip>.GetLoader(nameof(AudioClip)));
+            list.Add(Loader<GameObject, ParticleSystem>.GetLoader(nameof(ParticleSystem)));
+            loader.Initialize(list);
+            loader.Load();
             InitModeSet(set);
             InitSelecters();
         }
-        private void SetQuitEvent()
+        void OnQuitMode()
         {
-            OnQuit += OnQuitMode;
+            loader?.Unload();
+            LoaderFactory.Unload();
+            OnQuit?.Invoke();
         }
-        private void OnQuitMode()
-        {
-            resources.Unload();
-        }
-        private void InitModeSet(ModeSet set)
+        void InitModeSet(ModeSet set)
         {
             modeSet = set;
             modeSet.MapID = 0;
             modeSet.MapType = MapType.Lobby;
             modeSet.PlayableCharacterID = 0;
         }
-        private void InitSelecters()
+        void InitSelecters()
         {
-            resources = new();
-            playerableCharacterSelecter = resources.Load(nameof(LobbyMode), nameof(playerableCharacterSelecter));
-            playMapSelecter = resources.Load(nameof(LobbyMode), nameof(playMapSelecter));
-            gameStartSelecter = resources.Load(nameof(LobbyMode), nameof(gameStartSelecter));
+            playerableCharacter = LoaderFactory.Load<ISelect>(nameof(LobbyMode), nameof(playerableCharacter));
+            playMap = LoaderFactory.Load<ISelect>(nameof(LobbyMode), nameof(playMap));
+            gameStart = LoaderFactory.Load<ISelect>(nameof(LobbyMode), nameof(gameStart));
 
-            if (playerableCharacterSelecter == null || playMapSelecter == null || gameStartSelecter == null)
+            if (playerableCharacter is null || playMap is null || gameStart is null)
             {
-                OnQuit?.Invoke();
+                OnQuitMode();
                 return;
             }
 
-            playerableCharacterSelecter.OnSelect += OnSelectPlayerableCharacter;
-            playMapSelecter.OnSelect += OnSelectPlayMap;
-            gameStartSelecter.OnSelect += OnSelectGameStart;
+            playerableCharacter.OnSelect += OnSelectPlayerableCharacter;
+            playMap.OnSelect += OnSelectPlayMap;
+            gameStart.OnSelect += OnSelectGameStart;
         }
-        private void OnSelectPlayerableCharacter(ISelectManager selecter)
+        void OnSelectPlayerableCharacter(ISelect selecter)
         {
-            modeSet.PlayableCharacterID = playerableCharacterSelecter.SelectedValue;
+            modeSet.PlayableCharacterID = playerableCharacter.SelectedValue;
         }
-        private void OnSelectPlayMap(ISelectManager manager)
+        void OnSelectPlayMap(ISelect selecter)
         {
-            modeSet.MapID = playMapSelecter.SelectedValue;
+            modeSet.MapID = playMap.SelectedValue;
             modeSet.MapType = MapType.BattleMap;
         }
-        private void OnSelectGameStart(ISelectManager manager)
+        void OnSelectGameStart(ISelect selecter)
         {
-            OnQuit?.Invoke();
+            OnQuitMode();
         }
 
     }

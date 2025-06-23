@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7013370053947471494
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 9
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Shader Graphs_Shutter
+  m_Shader: {fileID: -6465566751694194690, guid: d44f51dae6d380341b7b861298eac44e,
+    type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 660cd742f94e0714bb983ba9e6f554f8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Picture:
+        m_Texture: {fileID: 2800000, guid: 660cd742f94e0714bb983ba9e6f554f8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_17b148531ce2453d9e25d5b533b846ad_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: d81f8307e644d9c4cb94bfa33f487c06, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_4cf2e09ca4bd411496306bdbc6cc4100_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 660cd742f94e0714bb983ba9e6f554f8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_9ee5b04a681d40149d64fd0cd4aad198_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: d81f8307e644d9c4cb94bfa33f487c06, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ScreenEffect:
+        m_Texture: {fileID: 2800000, guid: 02893ea4ea3a2be419d65586df89bcf3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ScreenEffect1:
+        m_Texture: {fileID: 2800000, guid: 02893ea4ea3a2be419d65586df89bcf3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ScreenEffect2:
+        m_Texture: {fileID: 2800000, guid: 26534f2d5894add499249fc1b8373a24, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Strength: 58.79
+    m_Colors:
+    - _Effect1Control: {r: 0, g: 0.76, b: 0, a: 0.12}
+    - _Effect2Control: {r: 0.85, g: 0, b: 0.07, a: 0}
+    - _Vector4: {r: 0.75, g: 0.72, b: 0.11, a: 0.16}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

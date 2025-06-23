@@ -15,25 +15,25 @@ namespace BattlePath
         public float maxTime = 1f;
         public int resolution = 100;
         public Color curveColor = Color.green;
-        public Vector3 pivot = Vector3.zero;
-        private readonly AnimationPath3 _path;
-        private float _limitDraw = 1000;
+
+        readonly AnimationPath3 path;
+        const float LIMIT_DRAW = 1000;
 
         public AnimationCurveRenderer(AnimationPath3 path)
         {
-            _path = path;
+            this.path = path;
         }
         public void DrawCurve()
         {
-            if (_path == null || resolution < 2)
+            if (path == null || resolution < 2)
                 return;
 
-            Vector3 prevPoint = pivot + _path.Evaluate(0);
-            var r = Mathf.Min(resolution * maxTime, _limitDraw);
+            Vector3 prevPoint = path.Evaluate(0);
+            var r = Mathf.Min(resolution * maxTime, LIMIT_DRAW);
             for (int i = 1; i <= r; i++)
             {
                 float t = (i / r) * maxTime;
-                Vector3 newPoint = pivot + _path.Evaluate(t);
+                Vector3 newPoint = path.Evaluate(t);
                 Debug.DrawLine(prevPoint, newPoint, curveColor);
                 prevPoint = newPoint;
             }
@@ -42,29 +42,30 @@ namespace BattlePath
 
     public class AnimationPath3 : AnimationPathBase
     {
-        private readonly AnimationCurve _x;
-        private readonly AnimationCurve _y;
-        private readonly AnimationCurve _z;
+        readonly AnimationCurve x;
+        readonly AnimationCurve y;
+        readonly AnimationCurve z;
         public Vector3 Multiply = Vector3.one;
+        public Vector3 pivot = Vector3.zero;
 
         public AnimationPath3(AnimationCurve x, AnimationCurve y, AnimationCurve z)
         {
-            _x = x;
-            _y = y;
-            _z = z;
+            this.x = x;
+            this.y = y;
+            this.z = z;
         }
         public override Vector3 Evaluate(float t)
         {
-            var x = _x.Evaluate(t);
-            var y = _y.Evaluate(t);
-            var z = _z.Evaluate(t);
-            return Vector3.Scale(new Vector3(x, y, z), Multiply);
+            var x = this.x.Evaluate(t);
+            var y = this.y.Evaluate(t);
+            var z = this.z.Evaluate(t);
+            return pivot + Vector3.Scale(new Vector3(x, y, z), Multiply);
         }
     }
 
     public abstract class AnimationPathComponent : MonoBehaviour
     {
-        private AnimationCurveRenderer _renderer;
+        AnimationCurveRenderer _renderer;
         public AnimationCurveRenderer Renderer
         {
             get
@@ -76,7 +77,7 @@ namespace BattlePath
                 return _renderer;
             }
         }
-        private AnimationPath3 _path;
+        AnimationPath3 _path;
         public AnimationPath3 Path
         {
             get
@@ -85,17 +86,18 @@ namespace BattlePath
                 {
                     _path = new(_x, _y, _z);
                 }
+                _path.pivot = transform.position;
                 return _path;
             }
         }
-        public List<EventPath> _events = new();
+        public List<EventPath> events = new();
         [SerializeField] private AnimationCurve _x = new();
         [SerializeField] private AnimationCurve _y = new();
         [SerializeField] private AnimationCurve _z = new();
         [SerializeField] private Vector3 _multiply = Vector3.one;
         [SerializeField, Range(1, 3600f)] private float _maxTime;
 
-        private float _preT;
+        float preT;
 
         [field: SerializeField, Range(0, 3600f)]
         public float T
@@ -106,7 +108,7 @@ namespace BattlePath
         protected abstract void OnUpdateTime(float normalizeTime);
         private void OnUpdateTime(float oldTime, float newTime)
         {
-            foreach (var e in _events)
+            foreach (var e in events)
             {
                 if (e.t < oldTime)
                 {
@@ -125,14 +127,14 @@ namespace BattlePath
         }
         private void Awake()
         {
-            _events = _events.OrderBy(x => x.t).ToList();
+            events = events.OrderBy(x => x.t).ToList();
         }
         private void OnDrawGizmosSelected()
         {
             Path.Multiply = _multiply;
             Renderer.DrawCurve();
             Renderer.maxTime = _maxTime;
-            foreach (var e in _events)
+            foreach (var e in events)
             {
                 if (e == null)
                 {
@@ -145,11 +147,11 @@ namespace BattlePath
                 e.t = Mathf.Clamp(e.t, 0, _maxTime);
                 e.DrawGizmos();
             }
-            if (_preT != T)
+            if (preT != T)
             {
                 T = Mathf.Clamp(T, 0, _maxTime);
-                OnUpdateTime(_preT, T);
-                _preT = T;
+                OnUpdateTime(preT, T);
+                preT = T;
             }
         }
     }

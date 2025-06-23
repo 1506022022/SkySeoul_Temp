@@ -18,6 +18,10 @@ namespace Battle
             SetTrigger(STATE_HIT, 1);
             AwaitExitEvent(STATE_HIT, 1, DoCalmDown);
         }
+        protected override void OnDie()
+        {
+            SetTrigger(STATE_DIE, 0);
+        }
         private Vector3 _preDir;
         private void UpdateDirection(Vector3 dir)
         {

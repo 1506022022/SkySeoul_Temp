@@ -21,7 +21,7 @@ namespace BattlePath
 
         protected override void OnUpdateTime(float normalizeTime)
         {
-            if (!_object.TryGetComponent<IPathObject>(out var pathObject))
+            if (_object == null || !_object.TryGetComponent<IPathObject>(out var pathObject))
             {
                 return;
             }

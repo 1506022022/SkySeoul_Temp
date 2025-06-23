@@ -8,13 +8,14 @@ using UnityEngine.Events;
 
 namespace TopDown
 {
-    public class MapSelecter : MonoBehaviour, ISelectManager
+    public class MapSelecter : MonoBehaviour, ISelect
     {
         public MapView MapViewPrefab;
         public uint SelectedValue { get; private set; }
-        public event Action<ISelectManager> OnSelect;
+        public event Action<ISelect> OnSelect;
         public UnityEvent OnFocusEvent;
         public UnityEvent OffFocusEvent;
+        public UnityEvent OnSelectEvent;
         public Vector2 margin;
         private Vector3 scrollVelocityX;
         private Vector3 scrollVelocityY;
@@ -29,7 +30,6 @@ namespace TopDown
         private Transform routeMaps;
 
         public Transform FocusTransform;
-        public Transform InfoWindow;
 
         private int clearedMapIndex = 0;
         private int routeMapIndex = 0;
@@ -44,12 +44,12 @@ namespace TopDown
         {
             SelectedValue = GetFocusedMapView().MapData.ID;
             OnSelect?.Invoke(this);
+            OnSelectEvent?.Invoke();
         }
         private void OnFocus()
         {
             IsFocused = true;
             GetFocusedMapView().SetOrderInLayer(1000);
-            InfoWindow.gameObject.SetActive(true);
             OnFocusEvent.Invoke();
         }
         private void OffFocus()
@@ -57,7 +57,6 @@ namespace TopDown
             IsFocused = false;
             PositionMaps();
             GetFocusedMapView().SetOrderInLayer(0);
-            InfoWindow.gameObject.SetActive(false);
             OffFocusEvent.Invoke();
         }
         private void Initialize()
@@ -120,22 +119,33 @@ namespace TopDown
         }
         private void Update()
         {
-            if (!IsFocused)
-                HandleInput();
-
             SmoothHorizontalScroll();
             SmoothVerticalScroll();
+            HandleFocus();
+
+            if (!IsFocused)
+            {
+                HandleInput();
+            }
+
+            if (IsFocused && Input.GetKeyDown(KeyCode.A))
+            {
+                Select();
+            }
 
             if (!IsFocused && Input.GetKeyDown(KeyCode.A))
             {
                 OnFocus();
             }
-
-            HandleFocus();
         }
+
+
+        public float y = 180f;
+        public float yDuration = 0.5f;
+        float yt = 0f;
         private void HandleFocus()
         {
-            if (!IsFocused) return;
+            if (!IsFocused) { yt = 0f; return; }
             if (Input.GetKeyDown(KeyCode.Escape)) { OffFocus(); return; }
 
             var focusedMap = GetFocusedMapView();
@@ -143,13 +153,14 @@ namespace TopDown
                 focusedMap.transform.position,
                 FocusTransform.position,
                 ref focusVelocity,
-                0.2f
+                yDuration
             );
-            focusedMap.transform.rotation = Quaternion.Slerp(
-                focusedMap.transform.rotation,
-                FocusTransform.rotation,
-                0.2f
+            focusedMap.transform.rotation = Quaternion.Lerp(
+                Quaternion.identity,
+                Quaternion.AngleAxis(y, Vector3.up),
+                yt
             );
+            yt += (Time.deltaTime / yDuration);
         }
         private MapView GetFocusedMapView()
         {

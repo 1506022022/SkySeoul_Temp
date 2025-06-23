@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -43,46 +44,25 @@ namespace Battle
         }
     }
 
-    public class MonsterComponent : CharacterComponent
+    public class MonsterComponent : CharacterComponent, IEnemy
     {
-        private Henchmen _henchmen;
+        public Henchmen henchmen { get; private set; }
 
         public override void Initialize()
         {
             base.Initialize();
-            _henchmen = new(this);
-            SetController(_henchmen);
-            _henchmen.Team = Team.Monster;
-        }
-        protected override void Update()
-        {
-            base.Update();
-            _henchmen.LookForJob();
-        }
-        void OnDisable()
-        {
-            _henchmen?.LeaveJob();
-        }
-        //protected override void OnHit(HitBoxCollision collision)
-        //{
-        //    base.OnHit(collision);
-        //    this.StopAllCoroutines();
-        //    this.StartCoroutine(KnockbackRoutine(collision.Attacker.Actor.forward));
-        //}
-        //private IEnumerator KnockbackRoutine(Vector3 direction)
-        //{
-        //    var knockbackDuration = 1.0f;
-        //    var knockbackStrength = 10f;
-        //    float timer = 0f;
-        //    float volume = Mathf.PI * Mathf.Pow(characterController.radius, 2) * characterController.height * 2f;
-        //    Vector3 velocity = direction.normalized * knockbackStrength / volume;
-        //    while (timer < knockbackDuration)
-        //    {
-        //        characterController.Move(velocity * Time.deltaTime);
+            henchmen = new(this);
+            SetController(henchmen);
+            henchmen.Team = Team.Monster;
 
-        //        timer += Time.deltaTime;
-        //        yield return null;
-        //    }
-        //}
+            StartCoroutine(WaitAndActiveAgent());
+        }
+
+
+        IEnumerator WaitAndActiveAgent()
+        {
+            yield return new WaitForSeconds(1f);
+            GetComponent<NavMeshAgent>().enabled = true;
+        }
     }
 }

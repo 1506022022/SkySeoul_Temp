@@ -17,9 +17,10 @@ namespace Battle
         public float JumpPower = 5f;
         public float SlidePower = 3f;
         [SerializeField] WeaponComponent weapon;
-        [SerializeField] HitBoxComponent hitBox;
+        [field: SerializeField] public HitBoxComponent Body { get; private set; }
         [Header("Debug")]
         [SerializeField] TextMeshProUGUI ui;
+        public readonly Statistics HP = new(10);
 
         public virtual void Initialize()
         {
@@ -33,9 +34,7 @@ namespace Battle
             character.OnCancel += OnCancel;
             character.OnInteraction += OnInteraction;
             character.OnSlide += OnSlide;
-
-
-            hitBox.HitBox.OnCollision += Hit;
+            character.OnDead += OnDie;
 
             weapon?.SetOwner(character, actor: transform);
 
@@ -52,9 +51,9 @@ namespace Battle
             }
             else
             {
-                SetAnimator(new ZombieAnimator());
+                SetAnimator(new EmptyAnimator());
                 SetController(new EmptyJoycon());
-                SetMovement(new CharacterMovement(character, transform));
+                SetMovement(new EmptyMovement());
             }
         }
         public void SetAnimator(CharacterAnimator characterAnimator)
@@ -82,7 +81,14 @@ namespace Battle
         {
 
         }
-        public void Hit(HitBoxCollision collision)
+        public void DoDie()
+        {
+            character.DoDie();
+        }
+        protected virtual void OnDie()
+        {
+        }
+        public void DoHit()
         {
             character.DoHit();
         }
@@ -151,7 +157,7 @@ namespace Battle
         }
         protected virtual void Update()
         {
-            controller.Update();
+            controller?.Update();
         }
         protected virtual void FixedUpdate()
         {
@@ -169,5 +175,9 @@ namespace Battle
             }
         }
 #endif
+        protected virtual void OnDestroy()
+        {
+            characterAnimator?.Unuse();
+        }
     }
 }

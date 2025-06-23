@@ -14,5 +14,4 @@ namespace TopDown
         public uint UserID;
         public uint PlayableCharacterID;
     }
-
 }

@@ -16,6 +16,7 @@ namespace Battle
         {
             base.Initialize(character, actor);
             bullet = new Bullet(transform, actor);
+            onFire.AddListener(bullet.OnFire);
         }
         protected override void DoAttack()
         {

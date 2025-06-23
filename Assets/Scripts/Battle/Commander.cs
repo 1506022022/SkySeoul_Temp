@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Util;
 using static Battle.CommanderHelper;
 
 namespace Battle
@@ -11,7 +10,7 @@ namespace Battle
     {
         private readonly T _EMPTY;
         private readonly FieldBase<T> _field;
-        private readonly List<Henchmen> _henchmens;
+        private readonly List<Henchmen> henchmens;
         private readonly Func<Henchmen, T> _generateElement;
 
         protected abstract void CalculateNextPosition(in FieldBase<T> field, in List<Vector2Int> goTo, Vector2Int currentIndex, out Vector2Int nextIndex);
@@ -22,10 +21,7 @@ namespace Battle
         public Commander(int width, int height, Vector3 pivot)
         {
             _field = new FieldBase<T>(width, height, pivot);
-            _henchmens = new List<Henchmen>();
-
-            Henchmen.OnSpawnEvent += AddHenchmen;
-            Henchmen.OnDestroyEvent += FreeHenchmen;
+            henchmens = new List<Henchmen>();
 
             SetGenerateTFunc(out _generateElement);
             SetEmptyValue(out _EMPTY);
@@ -33,9 +29,6 @@ namespace Battle
 
         ~Commander()
         {
-            Henchmen.OnSpawnEvent -= AddHenchmen;
-            Henchmen.OnDestroyEvent -= FreeHenchmen;
-
             FreeHenchmenAll();
         }
 
@@ -45,31 +38,23 @@ namespace Battle
             GiveCommand();
         }
 
-        private void AddHenchmen(Henchmen henchmen)
+        public void AddHenchmen(Henchmen henchmen)
         {
-            if (henchmen.HasDependency)
-            {
-                return;
-            }
-
-            _henchmens.Add(henchmen);
+            if (henchmen.HasDependency) return;
+            henchmens.Add(henchmen);
             henchmen.HasDependency = true;
         }
 
-        private void FreeHenchmen(Henchmen henchmen)
+        public void FreeHenchmen(Henchmen henchmen)
         {
-            if (!_henchmens.Contains(henchmen))
-            {
-                return;
-            }
-
-            _henchmens.Remove(henchmen);
+            if (!henchmens.Contains(henchmen)) return;
+            henchmens.Remove(henchmen);
             henchmen.HasDependency = false;
         }
 
         private void FreeHenchmenAll()
         {
-            foreach (var henchmen in _henchmens.ToList())
+            foreach (var henchmen in henchmens.ToList())
             {
                 FreeHenchmen(henchmen);
             }
@@ -78,7 +63,7 @@ namespace Battle
         private void SetField()
         {
             _field.Reset();
-            foreach (var henchmen in _henchmens.ToList())
+            foreach (var henchmen in henchmens.ToList())
             {
                 if (IsOutOfRange(henchmen.Position - _field.Pivot, _field.Height))
                 {
@@ -93,10 +78,10 @@ namespace Battle
 
         private void GiveCommand()
         {
-            _henchmens.OrderBy(x => ConvertToInedx(x.Position, _field));
+            henchmens.OrderBy(x => ConvertToInedx(x.Position, _field));
             GetGoToList(in _field, out var goTo);
 
-            foreach (var henchmen in _henchmens)
+            foreach (var henchmen in henchmens)
             {
                 if (henchmen.Team is not Team.Monster) continue;
 
@@ -111,9 +96,6 @@ namespace Battle
         }
         public void Dispose()
         {
-            Henchmen.OnSpawnEvent -= AddHenchmen;
-            Henchmen.OnDestroyEvent -= FreeHenchmen;
-
             FreeHenchmenAll();
         }
 

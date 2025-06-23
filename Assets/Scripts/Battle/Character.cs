@@ -24,10 +24,12 @@ namespace Battle
         Idle = 1 << 12,
         Slide = 1 << 13,
         Jump = 1 << 14,
-        StandUp = 1 << 15
+        StandUp = 1 << 15,
+        Die = 1 << 16
     }
     public class Character
     {
+        public event Action OnEntry;
         public event Action OnIdle;
         public event Action OnCalmDown;
         public event Action<Vector3> OnMove;
@@ -45,11 +47,13 @@ namespace Battle
         public event Action OnSlideEnd;
         public event Action OnInteraction;
         public event Action OnStandup;
+        public event Action OnDead;
         internal BodyState BodyState;
         private bool _cantAction => _cantMove |
             HasFlag(BodyState, BodyState.Attack);
         private bool _cantMove => HasFlag(BodyState,
             BodyState.Hit |
+            BodyState.Die |
             BodyState.Cancel |
             BodyState.Land |
             BodyState.Interaction) |
@@ -219,6 +223,7 @@ namespace Battle
         }
         public bool DoHit()
         {
+            if (HasFlag(BodyState, BodyState.Die)) return false;
             AddFlag(ref BodyState, BodyState.Hit);
             OnHit?.Invoke();
             return true;
@@ -233,6 +238,12 @@ namespace Battle
                 return true;
             }
             return false;
+        }
+        public void DoDie()
+        {
+            if (HasFlag(BodyState, BodyState.Die)) return;
+            AddFlag(ref BodyState, BodyState.Die);
+            OnDead?.Invoke();
         }
         private IEnumerator UpdateIdle()
         {
