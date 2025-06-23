@@ -5,6 +5,7 @@ public class SkillComponent : MonoBehaviour
 {
     [SerializeField] AttackBoxComponent attackContainer;
     bool initialized;
+
     [field: SerializeField] public Skill Skill { get; set; }
     public SkillController Controller { get; set; } = new();
 

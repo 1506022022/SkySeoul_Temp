@@ -187,6 +187,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1953997201587053350}
   - component: {fileID: 2422636813829501893}
+  - component: {fileID: 6576432596704004704}
   m_Layer: 0
   m_Name: Wide View
   m_TagString: Untagged
@@ -250,6 +251,36 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 1410967626314810232}
+--- !u!114 &6576432596704004704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113067352894063802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e501d18bb52cf8c40b1853ca4904654f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CollideAgainst:
+    serializedVersion: 2
+    m_Bits: 1
+  m_IgnoreTag: 
+  m_TransparentLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_MinimumDistanceFromTarget: 0.1
+  m_AvoidObstacles: 1
+  m_DistanceLimit: 0
+  m_MinimumOcclusionTime: 0
+  m_CameraRadius: 0.1
+  m_Strategy: 1
+  m_MaximumEffort: 4
+  m_SmoothingTime: 0
+  m_Damping: 0
+  m_DampingWhenOccluded: 0
+  m_OptimalTargetDistance: 0
 --- !u!1 &2618153491346219651
 GameObject:
   m_ObjectHideFlags: 0
@@ -424,6 +455,7 @@ MonoBehaviour:
   MoveSpeed: 1
   JumpPower: 5
   SlidePower: 3
+  deathDuration: 0
   weapon: {fileID: 7254064343907735795}
   <Body>k__BackingField: {fileID: 1044435921199409083}
   ui: {fileID: 637508546082774041}
@@ -569,6 +601,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5628082615318576008}
   - component: {fileID: 6009293455890338873}
+  - component: {fileID: 5012281670867918435}
   m_Layer: 0
   m_Name: Zoom In View
   m_TagString: Untagged
@@ -632,6 +665,36 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 7663936192878578098}
+--- !u!114 &5012281670867918435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5073625828215623087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e501d18bb52cf8c40b1853ca4904654f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CollideAgainst:
+    serializedVersion: 2
+    m_Bits: 1
+  m_IgnoreTag: 
+  m_TransparentLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_MinimumDistanceFromTarget: 0.1
+  m_AvoidObstacles: 1
+  m_DistanceLimit: 0
+  m_MinimumOcclusionTime: 0
+  m_CameraRadius: 0.1
+  m_Strategy: 1
+  m_MaximumEffort: 4
+  m_SmoothingTime: 0
+  m_Damping: 0
+  m_DampingWhenOccluded: 0
+  m_OptimalTargetDistance: 0
 --- !u!1 &5829633769133127692
 GameObject:
   m_ObjectHideFlags: 0

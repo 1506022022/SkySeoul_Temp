@@ -63,10 +63,8 @@ namespace Battle
         public float maxDistance = 10.0f;
         public float yMinLimit = -20f;
         public float yMaxLimit = 80f;
-        private float x = 0.0f;
-        private float y = 0.0f;
         public float sensitivity = 5f;      // 마우스 감도
-        public Vector3 offset = new Vector3(0, 2, -5);  // 초기 거리, 높이
+        public Vector3 offset = new Vector3(0, 1.7f, -5);  // 초기 거리, 높이
         public float smoothSpeed = 10f;     // 카메라 이동 부드러움
         private float yaw = 0f;
         private float pitch = 10f;
@@ -85,7 +83,7 @@ namespace Battle
             Vector3 desiredPosition = _body.position + rotation * offset.normalized * distance;
 
             // 부드러운 이동
-            _currentView.transform.position = Vector3.Lerp(_currentView.transform.position, desiredPosition, Time.deltaTime * smoothSpeed);
+            _currentView.transform.position = desiredPosition;
             _currentView.transform.LookAt(_body.position + Vector3.up * 1.5f);  // 캐릭터 머리 쯤 보기
 
             var forward = _currentView.transform.forward;
