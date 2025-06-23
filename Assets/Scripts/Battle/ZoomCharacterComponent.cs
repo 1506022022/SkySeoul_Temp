@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Battle
 {
-    public class ZoomCharacterComponent : CharacterComponent , IPlayable
+    public class ZoomCharacterComponent : CharacterComponent, IPlayable
     {
         private ShootingView view;
         [Header("View")]
@@ -11,13 +11,21 @@ namespace Battle
         [SerializeField, Range(0, 1000)] private float mouseSensitivity = 500;
         [SerializeField] private CinemachineVirtualCamera wideCam;
         [SerializeField] private CinemachineVirtualCamera zoomInCam;
+        public float SlidePower = 3f;
+
+        CharacterMovement movement;
         public override void Initialize()
         {
             base.Initialize();
-            view = new ShootingView(transform,wideCam,zoomInCam);
+            view = new ShootingView(transform, wideCam, zoomInCam);
             SetAnimator(new HanZoomOutAnimator());
             SetController(new HanZoomOutJoycon(this));
-            SetMovement(new CharacterMovement(character, transform));
+            movement = new CharacterMovement(character, transform)
+            {
+                SlidePower = this.SlidePower
+            };
+            SetMovement(movement);
+
         }
         public override void Dispose()
         {
@@ -43,6 +51,11 @@ namespace Battle
             {
                 view.VerticalRange = verticalRange;
                 view.MouseSensitivity = mouseSensitivity;
+            }
+
+            if (movement != null)
+            {
+                movement.SlidePower = this.SlidePower;
             }
         }
     }
