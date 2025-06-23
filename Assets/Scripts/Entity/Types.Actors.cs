@@ -19,6 +19,7 @@ namespace Entity
     [Serializable]
     public class ElementsData : ActorData
     {
+        public string ModelPath;
         public string ExitSkill;
         public Vector3 SkillOffset;
         public Vector3 SkillDirection;

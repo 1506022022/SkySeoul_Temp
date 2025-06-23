@@ -65,40 +65,35 @@ namespace Battle
         public float yMaxLimit = 80f;
         private float x = 0.0f;
         private float y = 0.0f;
-
+        public float sensitivity = 5f;      // 마우스 감도
+        public Vector3 offset = new Vector3(0, 2, -5);  // 초기 거리, 높이
+        public float smoothSpeed = 10f;     // 카메라 이동 부드러움
+        private float yaw = 0f;
+        private float pitch = 10f;
         void Update()
         {
-            float mouseX = Input.GetAxis("Mouse X");
-            float mouseY = Input.GetAxis("Mouse Y");
-            float scroll = Input.GetAxis("Mouse ScrollWheel");
 
-            x += mouseX * MouseSensitivity;
-            y -= mouseY * MouseSensitivity;
-            y = Mathf.Clamp(y, yMinLimit, yMaxLimit);
+            // 마우스 입력
+            yaw += Input.GetAxis("Mouse X") * sensitivity;
+            pitch -= Input.GetAxis("Mouse Y") * sensitivity;
+            pitch = Mathf.Clamp(pitch, -20f, 60f);  // 상하 회전 제한
 
-            distance -= scroll * MouseSensitivity;
-            distance = Mathf.Clamp(distance, minDistance, maxDistance);
+            // 회전 계산
+            Quaternion rotation = Quaternion.Euler(pitch, yaw, 0);
 
-            // 회전 쿼터니온 생성 (Euler → Quaternion)
-            Quaternion rotation = Quaternion.Euler(y, x, 0);
+            // 위치 계산
+            Vector3 desiredPosition = _body.position + rotation * offset.normalized * distance;
 
-            // 위치 계산 (캐릭터 주변 원 궤도 상 위치)
-            Vector3 offset = rotation * new Vector3(0, 0, -distance);
-            _currentView.transform.position = _body.position + offset;
+            // 부드러운 이동
+            _currentView.transform.position = Vector3.Lerp(_currentView.transform.position, desiredPosition, Time.deltaTime * smoothSpeed);
+            _currentView.transform.LookAt(_body.position + Vector3.up * 1.5f);  // 캐릭터 머리 쯤 보기
 
-            // 카메라는 캐릭터 바라보도록
-            _currentView.transform.LookAt(_body.position + Vector3.up * 1.5f);
-
-            // 캐릭터는 카메라 바라보는 방향으로 회전하되, 수평만
-            Vector3 direction = (_currentView.transform.position - _body.position);
-            direction.y = 0f;
-
-            if (direction.sqrMagnitude > 0.001f)
-            {
-                Quaternion targetRot = Quaternion.LookRotation(-direction);
-                _body.rotation = Quaternion.Slerp(_body.rotation, targetRot, Time.deltaTime * 10f);
-            }
+            var forward = _currentView.transform.forward;
+            forward.y = 0;
+            _body.forward = forward;
         }
+
+
         public void UpdateView()
         {
             Update();

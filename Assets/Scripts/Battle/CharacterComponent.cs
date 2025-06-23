@@ -17,6 +17,7 @@ namespace Battle
         public float MoveSpeed = 3f;
         public float JumpPower = 5f;
         public float SlidePower = 3f;
+        public float deathDuration;
         [SerializeField] WeaponComponent weapon;
         [field: SerializeField] public HitBoxComponent Body { get; private set; }
 
@@ -78,8 +79,8 @@ namespace Battle
         public void SetTeam(int team)
         {
             gameObject.layer = team;
-            Body.gameObject.layer = team;
-            weapon.gameObject.layer = team;
+            if (Body != null) Body.gameObject.layer = team;
+            if (weapon != null) weapon.gameObject.layer = team;
         }
         public void DoAttack()
         {

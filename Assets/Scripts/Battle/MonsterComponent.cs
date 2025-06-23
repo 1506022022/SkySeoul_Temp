@@ -77,8 +77,6 @@ namespace Battle
 
             StartCoroutine(WaitAndActiveAgent());
         }
-
-
         IEnumerator WaitAndActiveAgent()
         {
             yield return new WaitForSeconds(1f);

@@ -26,8 +26,8 @@ public class DataComponentTracker : MonoBehaviour
             Gizmos.DrawWireCube(Vector3.zero, size);
         }
 
-        SetValue(component.Data, "Position", transform.localPosition);
-        SetValue(component.Data, "Rotation", transform.localEulerAngles);
+        SetValue(component.Data, "Position", transform.position);
+        SetValue(component.Data, "Rotation", transform.eulerAngles);
     }
     static void SetValue(object data, string fieldName, object value)
     {

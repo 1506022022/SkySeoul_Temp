@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Battle
 {
-    public class Barricade : CharacterComponent
+    public class Barricade : CharacterComponent, IEnemy
     {
         HitBoxComponent body;
         Transform model;
