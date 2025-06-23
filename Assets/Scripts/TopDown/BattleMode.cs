@@ -90,8 +90,10 @@ namespace TopDown
             set.MapType = MapType.Lobby;
             OnQuit?.Invoke();
         }
+        FieldComponent rootField;
         void OnCreatedField(FieldComponent field)
         {
+            rootField = field;
             var teh = field.gameObject.AddComponent<TriggerEventHandler>();
             teh.OnEnter.AddListener((c) => { if (c.GetComponent<IPlayable>() != null) OnEnterField(field); });
             teh.OnExit.AddListener((c) => { if (c.GetComponent<IPlayable>() != null) OnExitField(field); });
@@ -107,11 +109,12 @@ namespace TopDown
         }
         void OnExitField(FieldComponent field)
         {
-
+            field.Dispose();
         }
         void OnEnterField(FieldComponent field)
         {
             current = field;
+            field.Initialize();
         }
         void OnBirthCharacter(CharacterComponent character)
         {
@@ -122,6 +125,8 @@ namespace TopDown
         }
         void OnBirthEnemy(CharacterComponent enemy)
         {
+            if (enemy is not MonsterComponent monster) return;
+            rootField.enemys.Add(monster);
         }
         void OnBirthPlayableCharacter(CharacterComponent pc)
         {
@@ -137,8 +142,9 @@ namespace TopDown
             ExitMode();
         }
         void OnDeadEnemy(CharacterComponent character)
-        {
-            current.Remove(character as MonsterComponent);
+       {
+            if(character is not MonsterComponent monster) return;   
+            current.Remove(monster);
         }
         void DisposeCharacter(CharacterComponent character)
         {

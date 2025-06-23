@@ -40,6 +40,7 @@ namespace Battle
             character.OnDead += OnDie;
 
             weapon?.SetOwner(character, actor: transform);
+            HP.Value = HP.MaxValue;
 
             if (GetType() == typeof(ZoomCharacterComponent))
             {

@@ -71,7 +71,7 @@ namespace Battle
         public override void Initialize()
         {
             base.Initialize();
-            henchmen = new(this);
+            henchmen ??= new(this);
             SetController(henchmen);
             henchmen.Team = Team.Monster;
 
