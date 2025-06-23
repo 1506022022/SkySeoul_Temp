@@ -1,9 +1,11 @@
 ﻿using Microlight.MicroBar;
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Battle
 {
-    public class BattleHUD
+    public class BattleHUD : IDisposable,IInitializable
     {
         readonly MicroBar playerBar;
         readonly MicroBar enemyBar;
@@ -23,10 +25,6 @@ namespace Battle
             enemyBar.transform.SetParent(HUD.transform, false);
             enemyBar.Initialize(1);
         }
-        ~BattleHUD()
-        {
-            GameObject.Destroy(HUD.gameObject);
-        }
         public void UpdatePlayer(CharacterComponent character)
         {
             if (playerBar == null) return;
@@ -36,6 +34,16 @@ namespace Battle
         {
             if (enemyBar == null) return;
             enemyBar.UpdateBar(character.HP.Ratio);
+        }
+
+        public void Dispose()
+        {
+            HUD.gameObject.SetActive(false);
+        }
+
+        public void Initialize()
+        {
+            HUD.gameObject.SetActive(true);
         }
     }
 }

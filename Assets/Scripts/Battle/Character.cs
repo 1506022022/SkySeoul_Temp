@@ -89,6 +89,7 @@ namespace Battle
             }
 
             AddFlag(ref BodyState, BodyState.Walk);
+            RemoveFlag(ref BodyState, BodyState.Run);
             OnMove?.Invoke(dir);
             return true;
         }
@@ -105,7 +106,8 @@ namespace Battle
                 return false;
             }
 
-            AddFlag(ref BodyState, BodyState.Walk);
+            RemoveFlag(ref BodyState, BodyState.Walk);
+            AddFlag(ref BodyState, BodyState.Run);
             OnRun?.Invoke(dir);
             return true;
         }
@@ -230,7 +232,7 @@ namespace Battle
         }
         public bool DoSlide()
         {
-            if (EqualsFlag(BodyState, (BodyState.Grounded | BodyState.Walk | BodyState.Idle)))
+            if (EqualsFlag(BodyState, (BodyState.Grounded | BodyState.Run | BodyState.Idle)))
             {
                 AddFlag(ref BodyState, BodyState.Slide);
                 RemoveFlag(ref BodyState, BodyState.Walk | BodyState.Idle);

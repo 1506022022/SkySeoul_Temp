@@ -17,6 +17,9 @@ namespace Battle
         public override void Initialize()
         {
             base.Initialize();
+            SetAnimator(new EmptyAnimator());
+            SetController(new EmptyJoycon(this));
+            SetMovement(new EmptyMovement());
             saveLocalPosition = transform.localPosition;
             model = transform.Find("Model");
             body = model?.GetComponent<HitBoxComponent>();

@@ -25,9 +25,6 @@ namespace Battle
         void OnHitCharacter(HitBoxCollision collision)
         {
             if (!collision.Victim.Actor.TryGetComponent<CharacterComponent>(out var character)) return;
-
-            character.HP.Value--;
-
             if (character.HP.Value > 0) character.DoHit(); else character.DoDie();
         }
     }
@@ -72,6 +69,8 @@ namespace Battle
         {
             base.Initialize();
             henchmen ??= new(this);
+            SetAnimator(new ZombieAnimator());
+            SetMovement(new MonsterMovement(character, transform));
             SetController(henchmen);
             henchmen.Team = Team.Monster;
 

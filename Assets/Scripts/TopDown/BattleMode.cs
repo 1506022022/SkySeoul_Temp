@@ -7,6 +7,7 @@ using UnityEngine;
 using System.Reflection;
 using Util;
 using Entity;
+using Cysharp.Threading.Tasks;
 
 namespace TopDown
 {
@@ -18,7 +19,8 @@ namespace TopDown
         BattleController battle = new();
         CharacterComponent playable;
         List<Loader> loaders;
-        FieldComponent current;
+        FieldComponent current, rootField;
+        readonly Dictionary<FieldComponent, bool> fieldClear = new();
         readonly List<CharacterComponent> enemy = new();
         readonly StringPair CreateTypeToEvent;
         readonly Loader<GameObject, CharacterComponent> characterDB;
@@ -90,13 +92,20 @@ namespace TopDown
             set.MapType = MapType.Lobby;
             OnQuit?.Invoke();
         }
-        FieldComponent rootField;
+        async void OnClearBattle()
+        {
+            playable.SetController(new EmptyJoycon(playable));
+            await UniTask.WaitForSeconds(3f);
+            ExitMode();
+        }
+
         void OnCreatedField(FieldComponent field)
         {
             rootField = field;
             var teh = field.gameObject.AddComponent<TriggerEventHandler>();
             teh.OnEnter.AddListener((c) => { if (c.GetComponent<IPlayable>() != null) OnEnterField(field); });
             teh.OnExit.AddListener((c) => { if (c.GetComponent<IPlayable>() != null) OnExitField(field); });
+            fieldClear.Add(field, false);
         }
         void OnCreatedEntryPoint(FieldComponent entry)
         {
@@ -107,14 +116,20 @@ namespace TopDown
             playable = GameObject.Instantiate(origin, pos, Quaternion.Euler(rot));
             OnBirthCharacter(playable);
         }
-        void OnExitField(FieldComponent field)
-        {
-            field.Dispose();
-        }
         void OnEnterField(FieldComponent field)
         {
             current = field;
             field.Initialize();
+        }
+        void OnClearField(FieldComponent field)
+        {
+            fieldClear[field] = true;
+            if (fieldClear.Values.All(clear => clear)) OnClearBattle();
+        }
+
+        void OnExitField(FieldComponent field)
+        {
+            field.Dispose();
         }
         void OnBirthCharacter(CharacterComponent character)
         {
@@ -142,9 +157,11 @@ namespace TopDown
             ExitMode();
         }
         void OnDeadEnemy(CharacterComponent character)
-       {
-            if(character is not MonsterComponent monster) return;   
+        {
+            if (character is not MonsterComponent monster) return;
             current.Remove(monster);
+
+            if (current.enemys.Count == 0 && !fieldClear[current]) OnClearField(current);
         }
         void DisposeCharacter(CharacterComponent character)
         {

@@ -1,11 +1,13 @@
+using System;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Battle
 {
-    public abstract class CharacterComponent : MonoBehaviour
+    public abstract class CharacterComponent : MonoBehaviour, IInitializable, IDisposable
     {
-        Character character;
+        protected Character character { get; private set; }
         IController controller;
         public bool IsGrounded => characterMovement.IsGrounded;
         CharacterAnimator characterAnimator;
@@ -41,24 +43,12 @@ namespace Battle
 
             weapon?.SetOwner(character, actor: transform);
             HP.Value = HP.MaxValue;
-
-            if (GetType() == typeof(ZoomCharacterComponent))
-            {
-                SetAnimator(new HanZoomOutAnimator());
-                SetController(new HanZoomOutJoycon(this));
-                SetMovement(new CharacterMovement(character, transform));
-            }
-            else if (GetType() == typeof(MonsterComponent))
-            {
-                SetAnimator(new ZombieAnimator());
-                SetMovement(new MonsterMovement(character, transform));
-            }
-            else
-            {
-                SetAnimator(new EmptyAnimator());
-                SetController(new EmptyJoycon(this));
-                SetMovement(new EmptyMovement());
-            }
+        }
+        public virtual void Dispose()
+        {
+            SetAnimator(new EmptyAnimator());
+            SetController(new EmptyJoycon(this));
+            SetMovement(new EmptyMovement());
         }
         public void SetAnimator(CharacterAnimator characterAnimator)
         {
@@ -189,5 +179,7 @@ namespace Battle
         {
             characterAnimator?.Unuse();
         }
+
+
     }
 }

@@ -15,18 +15,26 @@ namespace Battle
         {
             base.Initialize();
             view = new ShootingView(transform,wideCam,zoomInCam);
+            SetAnimator(new HanZoomOutAnimator());
+            SetController(new HanZoomOutJoycon(this));
+            SetMovement(new CharacterMovement(character, transform));
+        }
+        public override void Dispose()
+        {
+            base.Dispose();
+            view = null;
         }
         public void OnZoomOut()
         {
-            view.SetCamera(CamType.Wide);
+            view?.SetCamera(CamType.Wide);
         }
         public void OnZoomIn()
         {
-            view.SetCamera(CamType.Zoom);
+            view?.SetCamera(CamType.Zoom);
         }
         void LateUpdate()
         {
-            view.UpdateView();
+            view?.UpdateView();
         }
         protected override void OnDrawGizmosSelected()
         {
