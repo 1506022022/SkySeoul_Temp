@@ -65,6 +65,18 @@ MonoBehaviour:
     m_SerializedLabels:
     - IEnemy
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 941cb0c6b15924340af9eea26db29976
+    m_Address: Assets/Prefabs/Skill/2300000001.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 70e0edab01f27e7439b82dcd7e4a31be
+    m_Address: Assets/Prefabs/Skill/2300000002.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7107e067d9f312f4998c197892b1440a, type: 2}
   m_SchemaSet:
