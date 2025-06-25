@@ -63,34 +63,35 @@ namespace Battle
         public float maxDistance = 10.0f;
         public float yMinLimit = -20f;
         public float yMaxLimit = 80f;
-        private float x = 0.0f;
-        private float y = 0.0f;
-
+        public float sensitivity = 5f;      // 마우스 감도
+        public Vector3 offset = new Vector3(0, 1.7f, -5);  // 초기 거리, 높이
+        public float smoothSpeed = 10f;     // 카메라 이동 부드러움
+        private float yaw = 0f;
+        private float pitch = 10f;
         void Update()
         {
-            x -= Mathf.Clamp(Input.GetAxis("Mouse X"), -1, 1) * MouseSensitivity;
-            y += Mathf.Clamp(Input.GetAxis("Mouse Y"), -1, 1) * MouseSensitivity;
-            distance -= Mathf.Clamp(Input.GetAxis("Mouse ScrollWheel"), -1, 1) * MouseSensitivity;
 
-            distance = Mathf.Clamp(distance, minDistance, maxDistance);
-            y = Mathf.Clamp(y, yMinLimit, yMaxLimit);
-            x = Mathf.Clamp(x, -360f, 360f);
-            x = x == -360f || x == 360f ? 0f : x;
+            // 마우스 입력
+            yaw += Input.GetAxis("Mouse X") * sensitivity;
+            pitch -= Input.GetAxis("Mouse Y") * sensitivity;
+            pitch = Mathf.Clamp(pitch, -20f, 60f);  // 상하 회전 제한
 
-            Debug.Log(x);
-            float radianX = x * Mathf.Deg2Rad;
-            float radianY = (y + 3) * Mathf.Deg2Rad;
+            // 회전 계산
+            Quaternion rotation = Quaternion.Euler(pitch, yaw, 0);
 
-            float posX = _body.position.x + distance * Mathf.Sin(radianY) * Mathf.Cos(radianX);
-            float posY = _body.position.y + distance * Mathf.Cos(radianY);
-            float posZ = _body.position.z + distance * Mathf.Sin(radianY) * Mathf.Sin(radianX);
+            // 위치 계산
+            Vector3 desiredPosition = _body.position + rotation * offset.normalized * distance;
 
-            _currentView.transform.position = new Vector3(posX, posY, posZ);
+            // 부드러운 이동
+            _currentView.transform.position = desiredPosition;
+            _currentView.transform.LookAt(_body.position + Vector3.up * 1.5f);  // 캐릭터 머리 쯤 보기
 
-            Vector3 dir = (_body.position - _currentView.transform.position).normalized;
-            dir.y = 0;
-            _body.forward = dir;
+            var forward = _currentView.transform.forward;
+            forward.y = 0;
+            _body.forward = forward;
         }
+
+
         public void UpdateView()
         {
             Update();

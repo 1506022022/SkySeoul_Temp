@@ -1,23 +1,28 @@
+using System;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Battle
 {
-    public abstract class CharacterComponent : MonoBehaviour
+    public abstract class CharacterComponent : MonoBehaviour, IInitializable, IDisposable
     {
-        Character character;
+        protected Character character { get; private set; }
         IController controller;
         public bool IsGrounded => characterMovement.IsGrounded;
         CharacterAnimator characterAnimator;
         IMovement characterMovement;
         internal BodyState State => character.BodyState;
         [SerializeField] Animator animator;
+
         [Header("Battle")]
         public float MoveSpeed = 3f;
         public float JumpPower = 5f;
-        public float SlidePower = 3f;
+
+        public float deathDuration;
         [SerializeField] WeaponComponent weapon;
         [field: SerializeField] public HitBoxComponent Body { get; private set; }
+
         [Header("Debug")]
         [SerializeField] TextMeshProUGUI ui;
         public readonly Statistics HP = new(10);
@@ -37,24 +42,13 @@ namespace Battle
             character.OnDead += OnDie;
 
             weapon?.SetOwner(character, actor: transform);
-
-            if (GetType() == typeof(ZoomCharacterComponent))
-            {
-                SetAnimator(new HanZoomOutAnimator());
-                SetController(new HanZoomOutJoycon(this));
-                SetMovement(new CharacterMovement(character, transform));
-            }
-            else if (GetType() == typeof(MonsterComponent))
-            {
-                SetAnimator(new ZombieAnimator());
-                SetMovement(new MonsterMovement(character, transform));
-            }
-            else
-            {
-                SetAnimator(new EmptyAnimator());
-                SetController(new EmptyJoycon());
-                SetMovement(new EmptyMovement());
-            }
+            HP.Value = HP.MaxValue;
+        }
+        public virtual void Dispose()
+        {
+            SetAnimator(new EmptyAnimator());
+            SetController(new EmptyJoycon(this));
+            SetMovement(new EmptyMovement());
         }
         public void SetAnimator(CharacterAnimator characterAnimator)
         {
@@ -72,6 +66,12 @@ namespace Battle
         {
             if (movement == characterMovement) return;
             characterMovement = movement;
+        }
+        public void SetTeam(int team)
+        {
+            gameObject.layer = team;
+            if (Body != null) Body.gameObject.layer = team;
+            if (weapon != null) weapon.gameObject.layer = team;
         }
         public void DoAttack()
         {
@@ -169,7 +169,6 @@ namespace Battle
         {
             if (characterMovement is CharacterMovement move)
             {
-                move.SlidePower = SlidePower;
                 move.JumpPower = JumpPower;
                 move.MoveSpeed = MoveSpeed;
             }
@@ -179,5 +178,7 @@ namespace Battle
         {
             characterAnimator?.Unuse();
         }
+
+
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -7,8 +8,24 @@ namespace Battle
 {
     public class EmptyJoycon : IController
     {
+        public EmptyJoycon(CharacterComponent characterContainer)
+        {
+            JoinCharacter(characterContainer);
+        }
+
         public void Update()
         {
+        }
+
+        public void JoinCharacter(CharacterComponent character)
+        {
+            character.Body.HitBox.OnCollision += OnHitCharacter;
+        }
+
+        void OnHitCharacter(HitBoxCollision collision)
+        {
+            if (!collision.Victim.Actor.TryGetComponent<CharacterComponent>(out var character)) return;
+            if (character.HP.Value > 0) character.DoHit(); else character.DoDie();
         }
     }
 
@@ -51,14 +68,14 @@ namespace Battle
         public override void Initialize()
         {
             base.Initialize();
-            henchmen = new(this);
+            henchmen ??= new(this);
+            SetAnimator(new ZombieAnimator());
+            SetMovement(new MonsterMovement(character, transform));
             SetController(henchmen);
             henchmen.Team = Team.Monster;
 
             StartCoroutine(WaitAndActiveAgent());
         }
-
-
         IEnumerator WaitAndActiveAgent()
         {
             yield return new WaitForSeconds(1f);

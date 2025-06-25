@@ -18,6 +18,7 @@ namespace Battle
             {
                 DisposeCharacter(joinCharacters[0]);
             }
+            battleHUD.Dispose();
         }
         public void JoinCharacter(CharacterComponent character)
         {

@@ -1,14 +1,17 @@
+using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 namespace Battle
 {
-    public class FieldComponent : MonoBehaviour
+    public class FieldComponent : MonoBehaviour, IInitializable, IDisposable
     {
         public float interval = 3;
         float t = 0;
         enum CommanderType { Near, Random, NearStop };
         [SerializeField] private CommanderType type = CommanderType.Random;
         public List<MonsterComponent> enemys = new();
+        Commander<byte> commander;
 
         public void Add(MonsterComponent enemy)
         {
@@ -52,7 +55,6 @@ namespace Battle
         }
 
         [Min(1)] public Vector3Int Size = Vector3Int.one;
-        Commander<byte> commander;
         float CellSize = 1f;
         public void UpdateCommand()
         {
@@ -61,6 +63,7 @@ namespace Battle
         void Awake()
         {
             Initialize();
+
         }
         Vector3 cell;
         Vector3 pivot;
@@ -71,6 +74,8 @@ namespace Battle
                           + new Vector3(cell.x / 2f, cell.y / 2, cell.z / 2f);
 
             ChangeCommander(type);
+
+            for (int i = 0; i < enemys.Count; i++) {  enemys[i].gameObject.SetActive(true); enemys[i].Initialize(); }
         }
         void OnDrawGizmos()
         {
@@ -85,6 +90,12 @@ namespace Battle
                     Gizmos.DrawWireCube(cellCenter, cell);
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            commander = null;
+            for (int i = 0; i < enemys.Count; i++) enemys[i].gameObject.SetActive(false);
         }
     }
 

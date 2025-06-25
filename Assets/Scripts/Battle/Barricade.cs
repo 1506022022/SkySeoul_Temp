@@ -1,17 +1,25 @@
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 
 namespace Battle
 {
-    public class Barricade : CharacterComponent
+    public class Barricade : CharacterComponent, IEnemy
     {
         HitBoxComponent body;
         Transform model;
         public string ModelPath;
 
+        public SkillComponent exitSkill;
+        public Vector3 SkillOffset;
+        public Vector3 SkillRotation;
+
         public override void Initialize()
         {
             base.Initialize();
+            SetAnimator(new EmptyAnimator());
+            SetController(new EmptyJoycon(this));
+            SetMovement(new EmptyMovement());
             saveLocalPosition = transform.localPosition;
             model = transform.Find("Model");
             body = model?.GetComponent<HitBoxComponent>();
@@ -66,7 +74,20 @@ namespace Battle
             duration = 1f;
             magnitude = 0.2f;
             StartCoroutine(HitAnim());
+
+            if (exitSkill == null) return;
+            if (!IsPrefabInstance(exitSkill.gameObject)) exitSkill = GameObject.Instantiate(exitSkill);
+            exitSkill.transform.position = transform.position + SkillOffset;
+            exitSkill.transform.eulerAngles = transform.eulerAngles + SkillRotation;
+            exitSkill.Fire();
         }
+
+        bool IsPrefabInstance(GameObject obj)
+        {
+            return PrefabUtility.GetPrefabInstanceStatus(obj) == PrefabInstanceStatus.Connected ||
+                   PrefabUtility.GetPrefabInstanceStatus(obj) == PrefabInstanceStatus.Disconnected;
+        }
+
         float duration = 0.5f;
         float magnitude = 0.05f;
         Vector3 saveLocalPosition;

@@ -33,7 +33,12 @@ public class Statistics
 
     public Statistics(float max)
     {
-        maxValue = max;
-        value = max;
+        Initialize(max, max);
+    }
+
+    public void Initialize(float value, float maxValue)
+    {
+        this.value = value;
+        this.maxValue = maxValue;
     }
 }
