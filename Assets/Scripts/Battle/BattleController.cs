@@ -37,7 +37,7 @@ namespace Battle
         void OnHitCharacter(HitBoxCollision collision)
         {
             if (!collision.Victim.Actor.TryGetComponent<IActor>(out var actor)) return;
-
+            if (actor is IDeathable death && death.IsDead) return;
             if (actor is IHP health)
             {
                 Action<IHP> updateHUD = health switch

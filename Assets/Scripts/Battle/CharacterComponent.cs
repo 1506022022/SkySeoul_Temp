@@ -28,12 +28,13 @@ namespace Battle
 
         public Statistics HP { get; } = new Statistics(1);
 
-        bool IDeathable.IsDead => throw new NotImplementedException();
+        public bool IsDead { get; private set; } = true;
 
         float IDeathable.DeathDuration { get; set; }
 
         [Header("Debug")]
         [SerializeField] TextMeshProUGUI ui;
+        [SerializeField] bool initOnAwake;
 
         public virtual void Initialize()
         {
@@ -51,11 +52,12 @@ namespace Battle
 
             weapon?.SetOwner(character, actor: transform);
             HP.Value = HP.MaxValue;
+            IsDead = false;
         }
         public virtual void Dispose()
         {
             SetAnimator(new EmptyAnimator());
-            SetController(new EmptyJoycon(this as IActor));
+            SetController(new EmptyJoycon(this));
             SetMovement(new EmptyMovement());
         }
         public void SetAnimator(CharacterAnimator characterAnimator)
@@ -91,6 +93,7 @@ namespace Battle
         }
         public void DoDie()
         {
+            IsDead = true;
             character.DoDie();
         }
         protected virtual void OnDie()
@@ -161,7 +164,7 @@ namespace Battle
         }
         protected virtual void Awake()
         {
-            Initialize();
+            if (initOnAwake) Initialize();
         }
         protected virtual void Update()
         {
@@ -169,7 +172,7 @@ namespace Battle
         }
         protected virtual void FixedUpdate()
         {
-            characterMovement.UpdateGravity();
+            characterMovement?.UpdateGravity();
             ui?.SetText(character.BodyState.ToString());
         }
 #if UNITY_EDITOR

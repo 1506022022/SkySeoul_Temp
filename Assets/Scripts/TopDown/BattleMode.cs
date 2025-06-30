@@ -153,7 +153,7 @@ namespace TopDown
         }
         void OnBirthActor(IActor actor)
         {
-            (actor as IInitializable)?.Initialize();
+            
             battle.JoinCharacter(actor);
             if (actor is IEnemy enemy) OnBirthEnemy(enemy);
             else if (actor is IPlayable playableCharacter) OnBirthPlayableCharacter(playableCharacter);
@@ -165,6 +165,7 @@ namespace TopDown
         }
         void OnBirthPlayableCharacter(IPlayable pc)
         {
+            if(pc is IInitializable initializable) initializable.Initialize();
         }
         void OnBirthProp(IProp prop)
         {
@@ -183,6 +184,11 @@ namespace TopDown
         void OnDeadEnemy(IEnemy enemy)
         {
             if (enemy is not MonsterComponent monster) return;
+            if(current == null)
+            {
+                Debug.LogWarning("not found field");
+                return;
+            }
             current.Remove(monster);
 
             if (current.enemys.Count == 0 && !fieldClear[current]) OnClearField(current);

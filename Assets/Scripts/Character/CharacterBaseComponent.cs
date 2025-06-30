@@ -1,11 +1,12 @@
 using Battle;
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.ResourceManagement;
 
 namespace Character
 {
-    public abstract class CharacterBaseComponent : EntityBaseComponent, IDamageable, IDeathable, IMovable, IInitializable, IAttackable, IGroundCheckable, IHP
+    public abstract class CharacterBaseComponent : EntityBaseComponent, IDamageable, IDeathable, IMovable, IInitializable, IAttackable, IGroundCheckable, IHP, IDisposable
     {
         [SerializeField] protected Animator animator;
         [SerializeField] protected HitBoxComponent body;
@@ -14,9 +15,9 @@ namespace Character
         readonly IMove walk = new Walk();
         readonly IMove gravity = new ReciveGravity();
         public bool IsGrounded => Physics.Raycast(transform.position, Vector3.down, 0.3f, LayerMask.GetMask("Ground"));
-        public bool IsDead { get; private set; }
+        public bool IsDead { get; private set; } = true;
         float IDeathable.DeathDuration { get; set; }
-
+        [SerializeField] bool initOnEnable;
         void IInitializable.Initialize()
         {
             (this as IDeathable).Revive();
@@ -25,6 +26,11 @@ namespace Character
             OnInitialize();
         }
         protected virtual void OnInitialize() { }
+        void IDisposable.Dispose()
+        {
+            (this as IDeathable)?.Die();
+        }
+        protected virtual void OnDispose() { }
         void IAttackable.Attack(int attackType)
         {
             animator.SetTrigger("Attack");
@@ -65,8 +71,10 @@ namespace Character
 
         protected virtual void OnEnable()
         {
-            (this as IInitializable).Initialize();
+            if (initOnEnable)
+                (this as IInitializable).Initialize();
         }
+
         protected void LateUpdate()
         {
             OnLateUpdate();

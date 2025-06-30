@@ -24,11 +24,6 @@ public class LampGenerator : Generator<LampGenerator>
     protected override string basePrefabName => "Lamp";
     protected override string addressableLabel => "IProp";
 
-    void OnWizardCreate()
-    {
-        if (Valid()) GeneratePrefab(this);
-    }
-
     protected override void InitializePrefab(GameObject go)
     {
         var model = GameObject.Instantiate(Model); model.name = nameof(model);
@@ -47,11 +42,8 @@ public class LampGenerator : Generator<LampGenerator>
         FieldInfo fieldInfo = death.GetType().GetField("animator", BindingFlags.Public | BindingFlags.NonPublic |BindingFlags.Instance | BindingFlags.FlattenHierarchy);
         fieldInfo?.SetValue(death, animator);
     }
-    void OnWizardUpdate()
-    {
-        helpString = $"is Ready : {Valid().ToString()}";
-    }
-    bool Valid()
+
+    protected override bool IsValid()
     {
         return Model != null && Skill != null && (Animator != null || Model.GetComponent<Animator>()?.runtimeAnimatorController != null);
     }

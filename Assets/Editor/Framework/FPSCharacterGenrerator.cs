@@ -1,42 +1,40 @@
-using UnityEditor;
-using UnityEngine;
-using BehaviorDesigner.Runtime;
+using Battle;
 using Character;
 using System.Reflection;
+using UnityEditor;
+using UnityEngine;
 
-public class MonsterGnerator : Generator<MonsterGnerator>
+public class FPSCharacterGenrerator : Generator<FPSCharacterGenrerator>
 {
+    protected override string folderPath => "Assets/Runtime/PlayableCharacter";
+    protected override uint guid => 2000000000;
+    protected override string basePrefabName => "FPSCharacter";
+    protected override string addressableLabel => nameof(IPlayable);
+
     [Header("Require")]
     public GameObject Model;
-    public ExternalBehaviorTree Behavior;
 
     [Header("Override")]
     public RuntimeAnimatorController Animator;
 
-    protected override string folderPath => "Assets/Runtime/Monster";
-    protected override uint guid => 2100000000;
-    protected override string basePrefabName => "Zombie";
-    protected override string addressableLabel => "IEnemy";
-
-    [MenuItem("Assets/Create/Monster")]
+    [MenuItem("Assets/Create/FPSCharacter")]
     static void CreateWizard()
     {
-        ScriptableWizard.DisplayWizard<MonsterGnerator>("Create Monster", "Create");
+        ScriptableWizard.DisplayWizard<FPSCharacterGenrerator>("Create FPSCharacter", "Create");
     }
 
     protected override void InitializePrefab(GameObject go)
     {
-        var bt = go.GetComponent<BehaviorTree>();
-        bt.ExternalBehavior = Behavior;
-
         var model = GameObject.Instantiate(Model); model.name = nameof(model);
         model.transform.SetParent(go.transform, false);
 
         if (!model.TryGetComponent<Animator>(out var animator))
         {
             animator = model.AddComponent<Animator>();
+
         }
         if (Animator) animator.runtimeAnimatorController = Animator;
+        animator.applyRootMotion = false;
 
         var ec = go.GetComponent<CharacterBaseComponent>();
         FieldInfo fieldInfo = ec.GetType().GetField("animator", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
@@ -45,6 +43,6 @@ public class MonsterGnerator : Generator<MonsterGnerator>
 
     protected override bool IsValid()
     {
-        return Model != null && Behavior != null && (Animator != null || Model.GetComponent<Animator>()?.runtimeAnimatorController != null);
+        return true;
     }
 }

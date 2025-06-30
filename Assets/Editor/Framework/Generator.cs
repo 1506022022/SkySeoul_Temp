@@ -13,7 +13,19 @@ public abstract class Generator<T> : ScriptableWizard
     protected abstract string basePrefabName { get; }
     protected abstract string addressableLabel { get; }
     protected abstract void InitializePrefab(GameObject go);
-
+    protected abstract bool IsValid();
+    protected void OnWizardCreate()
+    {
+        if (IsValid()) GeneratePrefab(this);
+    }
+    protected void OnWizardUpdate()
+    {
+        helpString = $"is Ready : {IsValid().ToString()}";
+    }
+    protected void OnWizardOtherButton()
+    {
+        
+    }
     public void GeneratePrefab(Generator<T> generator)
     {
         RequireDirectory(generator.folderPath);

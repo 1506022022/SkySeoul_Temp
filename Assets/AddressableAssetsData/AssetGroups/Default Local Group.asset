@@ -119,6 +119,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - IPlayable
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d3681d98d3942a546a71b52147215a04
+    m_Address: Assets/Runtime/PlayableCharacter/2000000002.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - IPlayable
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7107e067d9f312f4998c197892b1440a, type: 2}
   m_SchemaSet:
