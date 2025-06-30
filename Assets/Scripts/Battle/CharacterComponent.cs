@@ -1,3 +1,4 @@
+using Character;
 using System;
 using TMPro;
 using Unity.VisualScripting;
@@ -5,7 +6,7 @@ using UnityEngine;
 
 namespace Battle
 {
-    public abstract class CharacterComponent : MonoBehaviour, IInitializable, IDisposable, IActor, ITransform
+    public abstract class CharacterComponent : MonoBehaviour, IInitializable, IDisposable, IActor, ITransform, IDamageable, IDeathable, IHP
     {
         protected CharacterState character { get; private set; }
         IController controller;
@@ -23,9 +24,16 @@ namespace Battle
         [SerializeField] WeaponComponent weapon;
         [field: SerializeField] public HitBoxComponent Body { get; private set; }
 
+        HitBox IDamageable.HitBox { get => Body?.HitBox ?? HitBox.Empty; }
+
+        public Statistics HP { get; } = new Statistics(1);
+
+        bool IDeathable.IsDead => throw new NotImplementedException();
+
+        float IDeathable.DeathDuration { get; set; }
+
         [Header("Debug")]
         [SerializeField] TextMeshProUGUI ui;
-        public readonly Statistics HP = new(10);
 
         public virtual void Initialize()
         {
@@ -179,6 +187,18 @@ namespace Battle
             characterAnimator?.Unuse();
         }
 
+        void IDamageable.TakeDamage()
+        {
+            DoHit();
+        }
 
+        void IDeathable.Revive()
+        {
+        }
+
+        void IDeathable.Die()
+        {
+            DoDie();
+        }
     }
 }
