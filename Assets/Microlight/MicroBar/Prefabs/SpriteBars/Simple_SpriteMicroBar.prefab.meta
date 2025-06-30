@@ -5,3 +5,10 @@ PrefabImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 239154
+  packageName: MicroBar - Animated Health Bar Framework
+  packageVersion: 
+  assetPath: Assets/Microlight/MicroBar/Prefabs/SpriteBars/Simple_SpriteMicroBar.prefab
+  uploadId: 0

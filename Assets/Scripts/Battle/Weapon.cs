@@ -4,10 +4,10 @@ namespace Battle
 {
     public class Weapon
     {
-        private readonly Character _character;
+        private readonly CharacterState _character;
         public event Action OnFire;
 
-        public Weapon(Character character)
+        public Weapon(CharacterState character)
         {
             _character = character;
             _character.OnAttack += OnAttack;

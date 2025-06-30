@@ -6,3 +6,10 @@ NativeFormatImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 239154
+  packageName: MicroBar - Animated Health Bar Framework
+  packageVersion: 2.5.2
+  assetPath: Assets/Microlight/MicroBar/DemoScene/Animations/Logo Anim Controller.controller
+  uploadId: 736164

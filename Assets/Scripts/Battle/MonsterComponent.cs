@@ -1,43 +1,51 @@
+using BehaviorDesigner.Runtime.Tactical;
+using Character;
 using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using IDamageable = Character.IDamageable;
 
 namespace Battle
 {
     public class EmptyJoycon : IController
     {
-        public EmptyJoycon(CharacterComponent characterContainer)
+        public EmptyJoycon(IActor actor)
         {
-            JoinCharacter(characterContainer);
+            JoinCharacter(actor);
         }
 
         public void Update()
         {
         }
 
-        public void JoinCharacter(CharacterComponent character)
+        public void JoinCharacter(IActor actor)
         {
-            character.Body.HitBox.OnCollision += OnHitCharacter;
+            if (actor is IHitBox body) body.HitBox.OnCollision += OnHitCharacter;
         }
-
         void OnHitCharacter(HitBoxCollision collision)
         {
-            if (!collision.Victim.Actor.TryGetComponent<CharacterComponent>(out var character)) return;
-            if (character.HP.Value > 0) character.DoHit(); else character.DoDie();
+            collision.Victim.Actor.TryGetComponent<IHP>(out var health);
+            collision.Victim.Actor.TryGetComponent<IDamageable>(out var hit);
+            collision.Victim.Actor.TryGetComponent<IDeathable>(out var death);
+
+            if (hit == null && death == null) return;
+
+            if (health == null) hit?.TakeDamage();
+            else if (health.HP.Value > 0) hit?.TakeDamage(); else death?.Die();
         }
     }
 
     public class MonsterMovement : IMovement
     {
         readonly NavMeshAgent agent;
-        readonly Character character;
+        readonly CharacterState character;
 
         public float speed = 3;
         public bool IsGrounded => agent?.isOnNavMesh ?? true;
 
-        public MonsterMovement(Character character, Transform transform)
+        public MonsterMovement(CharacterState character, Transform transform)
         {
             this.character = character;
             character.OnMove += Move;

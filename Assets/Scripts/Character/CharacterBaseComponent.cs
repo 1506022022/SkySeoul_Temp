@@ -1,0 +1,89 @@
+using Battle;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.ResourceManagement;
+
+namespace Character
+{
+    public abstract class CharacterBaseComponent : EntityBaseComponent, IDamageable, IDeathable, IMovable, IInitializable, IAttackable, IGroundCheckable, IHP
+    {
+        [SerializeField] protected Animator animator;
+        [SerializeField] protected HitBoxComponent body;
+        Statistics IHP.HP { get; } = new(1);
+        HitBox IDamageable.HitBox { get => body?.HitBox ?? HitBox.Empty; }
+        readonly IMove walk = new Walk();
+        readonly IMove gravity = new ReciveGravity();
+        public bool IsGrounded => Physics.Raycast(transform.position, Vector3.down, 0.3f, LayerMask.GetMask("Ground"));
+        public bool IsDead { get; private set; }
+        float IDeathable.DeathDuration { get; set; }
+
+        void IInitializable.Initialize()
+        {
+            (this as IDeathable).Revive();
+            walk.SetActor(transform);
+            gravity.SetActor(transform);
+            OnInitialize();
+        }
+        protected virtual void OnInitialize() { }
+        void IAttackable.Attack(int attackType)
+        {
+            animator.SetTrigger("Attack");
+            animator.SetInteger("AttackType", attackType);
+            OnAttack(attackType);
+        }
+        protected virtual void OnAttack(int attackType) { }
+        void IDeathable.Die()
+        {
+            IsDead = true;
+            animator.SetBool("IsDead", IsDead);
+            OnDie();
+        }
+        protected virtual void OnDie() { }
+
+        void IMovable.Move(Vector3 direction, float strength)
+        {
+            direction.Normalize();
+            animator.SetBool("IsMove", true);
+            (walk as IStrength)?.SetStrength(strength);
+            (walk as IDirection)?.SetDirection(direction);
+            OnMove(direction, strength);
+        }
+        protected virtual void OnMove(Vector3 direction, float strength) { }
+        void IDeathable.Revive()
+        {
+            IsDead = false;
+            animator.SetBool("IsDead", IsDead);
+            OnRevive();
+        }
+        protected virtual void OnRevive() { }
+        void IDamageable.TakeDamage()
+        {
+            animator.SetTrigger("Damaged");
+            OnTakeDamage();
+        }
+        protected virtual void OnTakeDamage() { }
+
+        protected virtual void OnEnable()
+        {
+            (this as IInitializable).Initialize();
+        }
+        protected void LateUpdate()
+        {
+            OnLateUpdate();
+        }
+        protected virtual void OnLateUpdate() { }
+        protected void FixedUpdate()
+        {
+            (walk as IUpdateReceiver).Update(Time.fixedDeltaTime);
+            (gravity as IUpdateReceiver).Update(Time.fixedDeltaTime);
+
+            float walkStrength = (walk as IStrength)?.GetStrength() ?? 0.5f;
+            walkStrength = Mathf.Max(walkStrength, 0.5f);
+            if (walkStrength == 0.5f) { animator.SetBool("IsMove", false); (walk as IStrength)?.SetStrength(0f); }
+            animator.SetFloat("MoveSpeed", walkStrength);
+
+            OnFixedUpdate();
+        }
+        protected virtual void OnFixedUpdate() { }
+    }
+}

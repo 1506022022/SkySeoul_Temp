@@ -18,6 +18,6 @@ MonoBehaviour:
   - Key: EntryPoint
     Value: OnCreatedEntryPoint
   - Key: ActorData
-    Value: OnBirthCharacter
-  - Key: ElementsData
-    Value: OnBirthCharacter
+    Value: OnBirthActor
+  - Key: PropData
+    Value: OnBirthActor

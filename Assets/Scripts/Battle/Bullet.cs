@@ -27,7 +27,6 @@ namespace Battle
         }
         public void OnFire()
         {
-            Debug.Log(nameof(OnFire));
             var hits = Physics.RaycastAll(GetAim());
             _attackBox.OpenAttackWindow();
             Enumerator.InvokeFor(hits, DoHit);

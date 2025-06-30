@@ -1,17 +1,30 @@
+using Character;
 using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 namespace Battle
 {
-    public class FieldComponent : MonoBehaviour, IInitializable, IDisposable
+    public class FieldComponent : MonoBehaviour, IInitializable, IDisposable, IActor
     {
-        public float interval = 3;
         float t = 0;
-        enum CommanderType { Near, Random, NearStop };
-        [SerializeField] private CommanderType type = CommanderType.Random;
-        public List<MonsterComponent> enemys = new();
-        Commander<byte> commander;
+        public float interval = 3;
+        public List<IEnemy> enemys = new();
+
+        void Update()
+        {
+            t += Time.deltaTime;
+            if (interval <= t)
+            {
+                t = 0;
+                var player = FindAnyObjectByType<PlayableBaseComponent>();
+                for (int i = 0; i < enemys.Count; i++)
+                {
+                    if (player == null) break;
+                    //enemys[i].henchmen.MoveTo(player.transform.position);
+                }
+            }
+        }
 
         public void Add(MonsterComponent enemy)
         {
@@ -20,50 +33,14 @@ namespace Battle
         public void Remove(MonsterComponent enemy)
         {
             enemys.Remove(enemy);
-            commander.FreeHenchmen(enemy.henchmen);
-        }
-
-        void ChangeCommander(CommanderType type)
-        {
-            commander?.Dispose();
-            commander = type switch
-            {
-                CommanderType.Near => new NearCommander(Size.x, Size.z, pivot),
-                CommanderType.Random => new RandomCommander(Size.x, Size.z, pivot),
-                CommanderType.NearStop => new NearStopCommander(Size.x, Size.z, pivot),
-                _ => new NearStopCommander(Size.x, Size.z, pivot)
-            };
-            for (int i = 0; i < enemys.Count; i++)
-            {
-                commander.AddHenchmen(enemys[i].henchmen);
-            }
-        }
-        CommanderType _preType;
-        void Update()
-        {
-            if (_preType != type)
-            {
-                ChangeCommander(type);
-                _preType = type;
-            }
-            t += Time.deltaTime;
-            if (interval < t)
-            {
-                t = 0;
-                UpdateCommand();
-            }
         }
 
         [Min(1)] public Vector3Int Size = Vector3Int.one;
         float CellSize = 1f;
-        public void UpdateCommand()
-        {
-            commander?.UpdateCommand();
-        }
+
         void Awake()
         {
             Initialize();
-
         }
         Vector3 cell;
         Vector3 pivot;
@@ -73,9 +50,11 @@ namespace Battle
             pivot = transform.position
                           + new Vector3(cell.x / 2f, cell.y / 2, cell.z / 2f);
 
-            ChangeCommander(type);
-
-            for (int i = 0; i < enemys.Count; i++) {  enemys[i].gameObject.SetActive(true); enemys[i].Initialize(); }
+            for (int i = 0; i < enemys.Count; i++)
+            {
+                if (enemys[i] is ITransform tActor) tActor.transform.gameObject.SetActive(true);
+                if (enemys[i] is IInitializable initializable) initializable.Initialize();
+            }
         }
         void OnDrawGizmos()
         {
@@ -94,8 +73,11 @@ namespace Battle
 
         public void Dispose()
         {
-            commander = null;
-            for (int i = 0; i < enemys.Count; i++) enemys[i].gameObject.SetActive(false);
+            for (int i = 0; i < enemys.Count; i++)
+            {
+                if (enemys[i] is ITransform tActor) tActor.transform.gameObject.SetActive(false);
+                if (enemys[i] is IDisposable disposable) disposable.Dispose();
+            }
         }
     }
 

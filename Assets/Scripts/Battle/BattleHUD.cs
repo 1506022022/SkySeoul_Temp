@@ -1,4 +1,5 @@
-﻿using Microlight.MicroBar;
+﻿using Character;
+using Microlight.MicroBar;
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -25,15 +26,15 @@ namespace Battle
             enemyBar.transform.SetParent(HUD.transform, false);
             enemyBar.Initialize(1);
         }
-        public void UpdatePlayer(CharacterComponent character)
+        public void UpdatePlayer(IHP health)
         {
             if (playerBar == null) return;
-            playerBar.UpdateBar(character.HP.Ratio);
+            playerBar.UpdateBar(health.HP.Ratio);
         }
-        public void UpdateMonster(CharacterComponent character)
+        public void UpdateMonster(IHP health)
         {
             if (enemyBar == null) return;
-            enemyBar.UpdateBar(character.HP.Ratio);
+            enemyBar.UpdateBar(health.HP.Ratio);
         }
 
         public void Dispose()

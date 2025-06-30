@@ -1,24 +1,25 @@
+using Character;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
 namespace Battle
 {
-    public class Barricade : CharacterComponent, IEnemy
+    public class Barricade : CharacterComponent, IProp, IDeathSkillOwner
     {
         HitBoxComponent body;
         Transform model;
         public string ModelPath;
 
-        public SkillComponent exitSkill;
-        public Vector3 SkillOffset;
-        public Vector3 SkillRotation;
+        [field: SerializeField] public SkillComponent DeathSkill { get; set; }
+        [field: SerializeField] public Vector3 DeathSkillOffset { get; set; }
+        [field: SerializeField] public Vector3 DeathSkillRotation { get; set; }
 
         public override void Initialize()
         {
             base.Initialize();
             SetAnimator(new EmptyAnimator());
-            SetController(new EmptyJoycon(this));
+            SetController(new EmptyJoycon(this as IActor));
             SetMovement(new EmptyMovement());
             saveLocalPosition = transform.localPosition;
             model = transform.Find("Model");
@@ -75,11 +76,11 @@ namespace Battle
             magnitude = 0.2f;
             StartCoroutine(HitAnim());
 
-            if (exitSkill == null) return;
-            if (!IsPrefabInstance(exitSkill.gameObject)) exitSkill = GameObject.Instantiate(exitSkill);
-            exitSkill.transform.position = transform.position + SkillOffset;
-            exitSkill.transform.eulerAngles = transform.eulerAngles + SkillRotation;
-            exitSkill.Fire();
+            if (DeathSkill == null) return;
+            if (!IsPrefabInstance(DeathSkill.gameObject)) DeathSkill = GameObject.Instantiate(DeathSkill);
+            DeathSkill.transform.position = transform.position + DeathSkillOffset;
+            DeathSkill.transform.eulerAngles = transform.eulerAngles + DeathSkillRotation;
+            DeathSkill.Fire();
         }
 
         bool IsPrefabInstance(GameObject obj)

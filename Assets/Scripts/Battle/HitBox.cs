@@ -18,6 +18,8 @@ namespace Battle
     [Serializable]
     public class HitBox : CollisionBox
     {
+        public static readonly HitBox Empty = new HitBox(null);
+
         public HitBox(Transform actor) : base(actor)
         {
         }

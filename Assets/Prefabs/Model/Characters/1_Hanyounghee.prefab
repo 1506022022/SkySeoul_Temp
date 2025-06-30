@@ -2941,7 +2941,6 @@ GameObject:
   - component: {fileID: 4583182296987857647}
   - component: {fileID: 4007022647961970156}
   - component: {fileID: 2893293526666105411}
-  - component: {fileID: 9097860978563287802}
   m_Layer: 2
   m_Name: 1_Hanyounghee
   m_TagString: Player
@@ -3023,49 +3022,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1.1, z: 0}
---- !u!114 &9097860978563287802
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6893617810621126438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ae3ac8cb8f3ca44894016064f5ecb93, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  walkspeed: 2
-  runspeed: 4
-  dodgespeed: 4
-  jumpForce: 3
-  rotationSpeed: 10
-  grounded: 1
-  groundLayers:
-    serializedVersion: 2
-    m_Bits: 1
-  handTransform: {fileID: 2373169321354119139}
-  aimTransform: {fileID: 0}
-  baseHP: 250
-  additionalHP: 0
-  maxHP: 0
-  currentHP: 90
-  baseSP: 100
-  additionalSP: 0
-  maxSP: 0
-  currentSP: 80
-  baseSH: 170
-  additionalSH: 0
-  maxSH: 0
-  currentSH: 170
-  baseCost: 4
-  additionalCost: 0
-  maxCost: 0
-  currentCost: 4
-  baseHackper: 0
-  additionalHackper: 0
-  maxHackper: 0
-  currentHand: -1
 --- !u!1 &7109558274675700706
 GameObject:
   m_ObjectHideFlags: 0

@@ -87,64 +87,64 @@ namespace Microlight.MicroBar
 
         internal bool Initialize(MicroBar bar)
         {
-            if (RenderType == RenderType.Image)
+            if(RenderType == RenderType.Image)
             {
-                if (UIBackground == null)
+                if(UIBackground == null)
                 {
                     Debug.LogError("[MicroBar] RenderType set to 'Image' but 'UIBackground' is null");
                     return false;
                 }
-                if (UIPrimaryBar == null)
+                if(UIPrimaryBar == null)
                 {
                     Debug.LogError("[MicroBar] RenderType set to 'Image' but 'UIPrimaryBar' is null");
                     return false;
                 }
-                if (UseGhostBar && UIGhostBar == null)
+                if(UseGhostBar && UIGhostBar == null)
                 {
                     Debug.LogError("[MicroBar] RenderType set to 'Image' but 'UIGhostBar' is null");
                     return false;
                 }
             }
-            if (RenderType == RenderType.Sprite)
+            if(RenderType == RenderType.Sprite)
             {
-                if (SRBackground == null)
+                if(SRBackground == null)
                 {
                     Debug.LogError("[MicroBar] RenderType set to 'Sprite' but 'SRBackground' is null");
                     return false;
                 }
-                if (SRPrimaryBar == null)
+                if(SRPrimaryBar == null)
                 {
                     Debug.LogError("[MicroBar] RenderType set to 'Sprite' but 'SRPrimaryBar' is null");
                     return false;
                 }
                 else
                 {
-                    if (SRPrimaryBar.GetComponent<SortingGroup>() == null)
+                    if(SRPrimaryBar.GetComponent<SortingGroup>() == null)
                     {
                         Debug.LogError("[MicroBar] Couldn't find the 'SortingGroup' for the 'SRPrimaryBar'");
                         return false;
                     }
                     SRPrimaryBarMask = SRPrimaryBar.GetComponentInChildren<SpriteMask>();
-                    if (SRPrimaryBarMask == null)
+                    if(SRPrimaryBarMask == null)
                     {
                         Debug.LogError("[MicroBar] Couldn't find the 'SpriteMask' for the 'SRPrimaryBar'");
                         return false;
                     }
                 }
-                if (UseGhostBar && SRGhostBar == null)
+                if(UseGhostBar && SRGhostBar == null)
                 {
                     Debug.LogError("[MicroBar] RenderType set to 'Sprite' but 'SRGhostBar' is null");
                     return false;
                 }
-                else if (UseGhostBar)
+                else if(UseGhostBar)
                 {
-                    if (SRGhostBar.GetComponent<SortingGroup>() == null)
+                    if(SRGhostBar.GetComponent<SortingGroup>() == null)
                     {
                         Debug.LogError("[MicroBar] Couldn't find the 'SortingGroup' for the 'SRPrimaryBar'");
                         return false;
                     }
                     SRGhostBarMask = SRGhostBar.GetComponentInChildren<SpriteMask>();
-                    if (SRGhostBarMask == null)
+                    if(SRGhostBarMask == null)
                     {
                         Debug.LogError("[MicroBar] Couldn't find the 'SpriteMask' for the 'SRGhostBar'");
                         return false;
@@ -168,9 +168,9 @@ namespace Microlight.MicroBar
             SilentUpdate();
 
             // Update colors
-            if (!AdaptiveColor)   // Adaptive color is handled through silent update
+            if(!AdaptiveColor)   // Adaptive color is handled through silent update
             {
-                if (isSprite)
+                if(isSprite)
                 {
                     SRPrimaryBar.color = BarPrimaryColor;
                 }
@@ -181,20 +181,20 @@ namespace Microlight.MicroBar
             }
 
             // Ghost bar
-            if (!UseGhostBar)
+            if(!UseGhostBar)
             {
-                if (SRGhostBar != null)
+                if(SRGhostBar != null)
                 {
                     SRGhostBar.gameObject.SetActive(false);
                 }
-                if (UIGhostBar != null)
+                if(UIGhostBar != null)
                 {
                     UIGhostBar.gameObject.SetActive(false);
                 }
             }
-            else if (!DualGhostBars)
+            else if(!DualGhostBars)
             {
-                if (isSprite)
+                if(isSprite)
                 {
                     SRGhostBar.color = GhostBarDamageColor;
                 }
@@ -209,7 +209,7 @@ namespace Microlight.MicroBar
         void Update(bool skipAnimation, UpdateAnim animationType)
         {
             // Always kill when bar is updating, because we dont want to have for example active damage animation if heal animation is active
-            if (sequence.IsActive())
+            if(sequence.IsActive())
             {
                 sequence.Kill();
                 sequence = null;
@@ -218,7 +218,7 @@ namespace Microlight.MicroBar
             // Decide if animation should be skipped
             bool isHealAnimation = ParentBar.CurrentValue > ParentBar.PreviousValue;
             SimpleAnim animToBePlayed = isHealAnimation ? HealAnim : DamageAnim;
-            if (skipAnimation || !IsAnimated || animToBePlayed == SimpleAnim.None)
+            if(skipAnimation || !IsAnimated || animToBePlayed == SimpleAnim.None)
             {
                 SilentUpdate();
                 return;
@@ -230,37 +230,35 @@ namespace Microlight.MicroBar
         // Silently updates bars to the values without animating
         void SilentUpdate()
         {
-            if (ParentBar == null)
+            if(ParentBar == null)
             {
                 Debug.LogError("[MicroBar] Missing reference to the 'ParentBar'");
                 return;
             }
 
-            if (RenderType == RenderType.Image)
+            if(RenderType == RenderType.Image)
             {
-                var newScale = UIPrimaryBar.rectTransform.localScale;
-                newScale.x = ParentBar.HPPercent;
-                UIPrimaryBar.rectTransform.localScale = newScale;
-                if (UseGhostBar)
+                UIPrimaryBar.fillAmount = ParentBar.HPPercent;
+                if(UseGhostBar)
                 {
-                    UIGhostBar.rectTransform.localScale = newScale;
+                    UIGhostBar.fillAmount = ParentBar.HPPercent;
                 }
             }
-            else if (RenderType == RenderType.Sprite)
+            else if(RenderType == RenderType.Sprite)
             {
                 SRPrimaryBarMask.transform.localScale = new Vector3(ParentBar.HPPercent, SRPrimaryBarMask.transform.localScale.y, SRPrimaryBarMask.transform.localScale.z);
-                if (UseGhostBar)
+                if(UseGhostBar)
                 {
                     SRGhostBarMask.transform.localScale = new Vector3(ParentBar.HPPercent, SRGhostBarMask.transform.localScale.y, SRGhostBarMask.transform.localScale.z);
                 }
             }
 
-            if (AdaptiveColor)
+            if(AdaptiveColor)
             {
                 SimpleAnimBuilder.SetAdaptiveBarColor(this, false);
             }
 
-            if (DualGhostBars)
+            if(DualGhostBars)
             {
                 SimpleAnimBuilder.SetGhostBarColor(this);
             }
@@ -268,7 +266,7 @@ namespace Microlight.MicroBar
 
         void Destroy()
         {
-            if (sequence.IsActive())
+            if(sequence.IsActive())
             {
                 sequence.Kill();
                 sequence = null;

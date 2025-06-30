@@ -35,6 +35,8 @@ namespace Battle
         public static Vector2Int ConvertToInedx<T>(Vector3 position, FieldBase<T> field)
         {
             Vector2Int index = new((int)(position.x - field.Pivot.x), (int)(position.z - field.Pivot.z));
+            index.x = Mathf.Max(0, index.x);
+            index.y = Mathf.Max(0, index.y);
             return index;
         }
 

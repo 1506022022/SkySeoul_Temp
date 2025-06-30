@@ -47,12 +47,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - Skill
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1393fa2a78c66904baaee108dd86c8bb
-    m_Address: Assets/JsonData/Map/Unknown.Json
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - FieldData
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9b69823448e650f4ca13c0509b5599ad
     m_Address: Assets/Prefabs/CharacterStruct/2200000000.prefab
     m_ReadOnly: 0
@@ -76,6 +70,54 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Skill
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 52f615171f45f6848b4db94543688940
+    m_Address: Assets/Prefabs/Skill/2300000003.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 895a24eef199808449a777af6e285fd2
+    m_Address: Assets/Prefabs/Skill/2300000004.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3cb829f8aadced544b3a0b2d67a0c1d8
+    m_Address: Assets/JsonData/Map/A-2.Json
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - FieldData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d4f9c9fa28ba3d64cb3f69555024d56b
+    m_Address: Assets/JsonData/Map/A-3.Json
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - FieldData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 68562752f6722be489130708d209c848
+    m_Address: Assets/JsonData/Map/A-1.Json
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - FieldData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7701bd5d41cc5c8498c0e7b1570fa052
+    m_Address: Assets/Runtime/Prop/2200000000.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - IProp
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe0bf28b895e2d54db10b5c3452ec5e3
+    m_Address: Assets/Runtime/Monster/2100000000.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - IEnemy
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eea294481aee3704192c5009efe07e9b
+    m_Address: Assets/Runtime/PlayableCharacter/2000000001.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - IPlayable
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7107e067d9f312f4998c197892b1440a, type: 2}

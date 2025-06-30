@@ -9,3 +9,10 @@ MonoImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 239154
+  packageName: MicroBar - Animated Health Bar Framework
+  packageVersion: 2.5.2
+  assetPath: Assets/Microlight/MicroBar/Editor/AnimCommand_Fields.cs
+  uploadId: 736164

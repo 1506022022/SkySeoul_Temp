@@ -6,7 +6,7 @@ namespace Battle
     {
         Transform actor;
         Weapon weapon;
-        public void SetOwner(Character character, Transform actor)
+        public void SetOwner(CharacterState character, Transform actor)
         {
             this.actor = actor;
             weapon = new Weapon(character);
@@ -15,6 +15,6 @@ namespace Battle
             Initialize(character, actor);
         }
         protected abstract void DoAttack();
-        protected virtual void Initialize(Character character, Transform actor) { }
+        protected virtual void Initialize(CharacterState character, Transform actor) { }
     }
 }

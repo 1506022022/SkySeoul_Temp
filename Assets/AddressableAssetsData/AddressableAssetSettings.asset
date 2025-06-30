@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 0276e67675016dd4abdd335bcf390490
   m_currentHash:
     serializedVersion: 2
-    Hash: eefc4f283667779e7ebbc81e79f597b2
+    Hash: 446d6e72dd57c19b14329062c89ebbb1
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -99,6 +99,7 @@ MonoBehaviour:
     - FieldData
     - FieldComponent
     - Skill
+    - IProp
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 18a3be959fabdb54482298621204316a, type: 2}

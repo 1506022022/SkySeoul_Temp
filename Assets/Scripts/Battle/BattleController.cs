@@ -1,13 +1,15 @@
-﻿using System;
+﻿using Character;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Battle
 {
     public class BattleController : IController
     {
-        public event Action<CharacterComponent> OnDead;
+        public event Action<IActor> OnDead;
         readonly BattleHUD battleHUD = new();
-        readonly List<CharacterComponent> joinCharacters = new();
+        readonly HashSet<IActor> joinCharacters = new();
 
         public void Update()
         {
@@ -16,39 +18,48 @@ namespace Battle
         {
             while (joinCharacters.Count > 0)
             {
-                DisposeCharacter(joinCharacters[0]);
+                DisposeCharacter(joinCharacters.First());
             }
             battleHUD.Dispose();
         }
-        public void JoinCharacter(CharacterComponent character)
+        public void JoinCharacter(IActor actor)
         {
-            character.Body.HitBox.OnCollision += OnHitCharacter;
+            if (actor is IDamageable body)
+                body.HitBox.OnCollision += OnHitCharacter;
+            joinCharacters.Add(actor);
         }
-        public void DisposeCharacter(CharacterComponent character)
+        public void DisposeCharacter(IActor actor)
         {
-            character.Body.HitBox.OnCollision -= OnHitCharacter;
-            joinCharacters.Remove(character);
+            if (actor is IDamageable body)
+                body.HitBox.OnCollision -= OnHitCharacter;
+            joinCharacters.Remove(actor);
         }
         void OnHitCharacter(HitBoxCollision collision)
         {
-            if (!collision.Victim.Actor.TryGetComponent<CharacterComponent>(out var character)) return;
+            if (!collision.Victim.Actor.TryGetComponent<IActor>(out var actor)) return;
 
-            Action<CharacterComponent> updateHUD = character switch
+            if (actor is IHP health)
             {
-                IPlayable => battleHUD.UpdatePlayer,
-                _ => battleHUD.UpdateMonster
-            };
-            updateHUD.Invoke(character);
-            character.HP.Value--;
-            updateHUD.Invoke(character);
+                Action<IHP> updateHUD = health switch
+                {
+                    IPlayable => battleHUD.UpdatePlayer,
+                    _ => battleHUD.UpdateMonster
+                };
+                updateHUD.Invoke(health);
+                health.HP.Value--;
+                updateHUD.Invoke(health);
+                if (health.HP.Value <= 0) DoDie(actor);
+                else if (actor is IDamageable damageable) damageable.TakeDamage();
+            }
 
-            if (character.HP.Value > 0) character.DoHit(); else DoDie(character);
+
+            else if (actor is IDamageable damageable) damageable.TakeDamage();
         }
-        void DoDie(CharacterComponent character)
+        void DoDie(IActor actor)
         {
-            this.DisposeCharacter(character);
-            character.DoDie();
-            OnDead?.Invoke(character);
+            this.DisposeCharacter(actor);
+            if (actor is IDeathable death) death.Die();
+            OnDead?.Invoke(actor);
         }
     }
 }

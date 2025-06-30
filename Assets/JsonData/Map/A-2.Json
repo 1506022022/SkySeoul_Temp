@@ -1,0 +1,4 @@
+{"HeaderType":"FieldData","Name":"Field","Position":{"x":-40.0,"y":1.8799972534179688,"z":-12.09000015258789},"Rotation":{"x":0.0,"y":0.0,"z":0.0},"Size":{"x":10,"y":5,"z":30}}
+{"HeaderType":"ActorData","Name":"2100000000","HP":13,"Team":{"serializedVersion":"2","m_Bits":6},"Position":{"x":-38.5,"y":1.8799972534179688,"z":-3.989999771118164},"Rotation":{"x":0.0,"y":0.0,"z":0.0},"EnterDuration":3.0,"ExitDuration":5.0}
+{"HeaderType":"ActorData","Name":"2100000000","HP":13,"Team":{"serializedVersion":"2","m_Bits":6},"Position":{"x":-37.19999694824219,"y":1.8799972534179688,"z":2.2399988174438478},"Rotation":{"x":0.0,"y":0.0,"z":0.0},"EnterDuration":3.0,"ExitDuration":5.0}
+{"HeaderType":"ActorData","Name":"2100000000","HP":13,"Team":{"serializedVersion":"2","m_Bits":6},"Position":{"x":-33.14999771118164,"y":1.8799972534179688,"z":0.18999862670898438},"Rotation":{"x":0.0,"y":0.0,"z":0.0},"EnterDuration":3.0,"ExitDuration":5.0}

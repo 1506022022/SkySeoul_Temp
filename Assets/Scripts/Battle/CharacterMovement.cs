@@ -24,13 +24,13 @@ namespace Battle
         public float MoveSpeed = 2f;
         public float JumpPower = 4f;
         public float SlidePower = 1f;
-        private readonly Character character;
+        private readonly CharacterState character;
         private readonly CharacterController controller;
         private Coroutine slidingCoroutine;
 
         public bool IsGrounded => controller?.isGrounded ?? true;
 
-        public CharacterMovement(Character character, Transform transform)
+        public CharacterMovement(CharacterState character, Transform transform)
         {
             this.character = character;
             if (!transform.TryGetComponent(out controller)) controller = transform.AddComponent<CharacterController>();

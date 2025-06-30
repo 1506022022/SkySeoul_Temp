@@ -17,7 +17,7 @@ namespace Entity
     }
 
     [Serializable]
-    public class ElementsData : ActorData
+    public class PropData : ActorData
     {
         public string ModelPath;
         public string ExitSkill;

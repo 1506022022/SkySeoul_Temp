@@ -32,7 +32,7 @@ namespace Battle
         protected const string PARAMETERS_HORIZONTAL = "Horizontal";
         protected const string PARAMETERS_VERTICAL = "Vertical";
         protected Animator animator;
-        protected Character character;
+        protected CharacterState character;
         protected readonly Dictionary<string, int> _stringToHash = new();
         protected readonly Dictionary<int, string> _hashToString = new();
         private readonly Dictionary<int, Lerp> _lerps = new();
@@ -59,7 +59,7 @@ namespace Battle
         {
         
         }
-        public void Initialize(Character character, Animator animator)
+        public void Initialize(CharacterState character, Animator animator)
         {
             this.character = character;
             this.animator = animator;

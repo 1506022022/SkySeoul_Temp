@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace Battle
 {
-    public abstract class CharacterComponent : MonoBehaviour, IInitializable, IDisposable
+    public abstract class CharacterComponent : MonoBehaviour, IInitializable, IDisposable, IActor, ITransform
     {
-        protected Character character { get; private set; }
+        protected CharacterState character { get; private set; }
         IController controller;
         public bool IsGrounded => characterMovement.IsGrounded;
         CharacterAnimator characterAnimator;
@@ -47,7 +47,7 @@ namespace Battle
         public virtual void Dispose()
         {
             SetAnimator(new EmptyAnimator());
-            SetController(new EmptyJoycon(this));
+            SetController(new EmptyJoycon(this as IActor));
             SetMovement(new EmptyMovement());
         }
         public void SetAnimator(CharacterAnimator characterAnimator)

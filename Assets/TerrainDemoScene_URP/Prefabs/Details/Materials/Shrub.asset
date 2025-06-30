@@ -360,7 +360,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - Animation_Cutoff: 100
+    - Animation_Cutoff: 0
     - Boolean_f7b755fc9b2a45c79aacd7caf2b759f0: 0
     - Distance_Fade_End: 100
     - Distance_Fade_Start: 50
@@ -644,3 +644,4 @@ Material:
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1
