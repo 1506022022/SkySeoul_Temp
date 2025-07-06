@@ -9,7 +9,7 @@ namespace Framework
 {
     public class SkillGenerator
     {
-        static readonly string folderPath = "Assets/Prefabs/Skill";
+        static readonly string folderPath = "Assets/Runtime/Skill";
         const uint skillGUID = 2300000000;
 
         [MenuItem("Assets/Create/Skill")]
