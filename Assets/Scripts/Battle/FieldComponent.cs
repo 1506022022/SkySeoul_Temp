@@ -10,7 +10,8 @@ namespace Battle
         float t = 0;
         public float interval = 3;
         public List<IEnemy> enemys = new();
-
+        bool isDispose;
+        [SerializeField] bool initOnAwake;
         void Update()
         {
             t += Time.deltaTime;
@@ -26,11 +27,16 @@ namespace Battle
             }
         }
 
-        public void Add(MonsterComponent enemy)
+        public void Add(IEnemy enemy)
         {
             enemys.Add(enemy);
+            if(isDispose)
+            {
+                if (enemy is ITransform tActor) tActor.transform.gameObject.SetActive(false);
+                if (enemy is IDisposable disposable) disposable.Dispose();
+            }
         }
-        public void Remove(MonsterComponent enemy)
+        public void Remove(IEnemy enemy)
         {
             enemys.Remove(enemy);
         }
@@ -40,12 +46,13 @@ namespace Battle
 
         void Awake()
         {
-            Initialize();
+            if (initOnAwake) Initialize();
         }
         Vector3 cell;
         Vector3 pivot;
         public void Initialize()
         {
+            isDispose = false;
             cell = (Vector3.right + Vector3.forward) * CellSize + Vector3.up * 0.2f;
             pivot = transform.position
                           + new Vector3(cell.x / 2f, cell.y / 2, cell.z / 2f);
@@ -73,6 +80,7 @@ namespace Battle
 
         public void Dispose()
         {
+            isDispose = true;
             for (int i = 0; i < enemys.Count; i++)
             {
                 if (enemys[i] is ITransform tActor) tActor.transform.gameObject.SetActive(false);

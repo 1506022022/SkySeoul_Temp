@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dd922ae02c94c87a66e46a10a7319b9, type: 3}
+  m_Name: AbnormalStatus
+  m_EditorClassIdentifier: 
+  AssetID:
+    m_Value0: 10726445784451181603
+    m_Value1: 1495312732777482857
+  m_Variables:
+  - rid: 8244193286658457730
+  - rid: 8244193286658457731
+  m_VersionTimestamp: 638873516677165185
+  m_CommandBuffer:
+    m_Commands: []
+  m_RuntimeBlackboardAsset: {fileID: 3485826256965194688}
+  references:
+    version: 2
+    RefIds:
+    - rid: 8244193286658457730
+      type: {class: 'TypedVariableModel`1[[System.Boolean, mscorlib]]', ns: Unity.Behavior.GraphFramework,
+        asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 11358305731151512353
+          m_Value1: 9775574987440027240
+        Name: hit
+        IsExposed: 1
+        m_IsShared: 1
+        m_Value: 0
+    - rid: 8244193286658457731
+      type: {class: 'TypedVariableModel`1[[System.Boolean, mscorlib]]', ns: Unity.Behavior.GraphFramework,
+        asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 3237690603377921876
+          m_Value1: 7169692429820626003
+        Name: stun
+        IsExposed: 1
+        m_IsShared: 1
+        m_Value: 0
+--- !u!114 &3485826256965194688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
+  m_Name: AbnormalStatus
+  m_EditorClassIdentifier: 
+  VersionTimestamp: 638873516677165185
+  AssetID:
+    m_Value0: 10726445784451181603
+    m_Value1: 1495312732777482857
+  m_Blackboard:
+    m_Variables:
+    - rid: 8244193286658457732
+    - rid: 8244193286658457733
+  m_SharedBlackboardVariableGuids:
+  - m_Value0: 11358305731151512353
+    m_Value1: 9775574987440027240
+  - m_Value0: 3237690603377921876
+    m_Value1: 7169692429820626003
+  references:
+    version: 2
+    RefIds:
+    - rid: 8244193286658457732
+      type: {class: 'BlackboardVariable`1[[System.Boolean, mscorlib]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 11358305731151512353
+          m_Value1: 9775574987440027240
+        Name: hit
+        m_Value: 0
+    - rid: 8244193286658457733
+      type: {class: 'BlackboardVariable`1[[System.Boolean, mscorlib]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 3237690603377921876
+          m_Value1: 7169692429820626003
+        Name: stun
+        m_Value: 0

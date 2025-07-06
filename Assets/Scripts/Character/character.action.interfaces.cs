@@ -18,5 +18,19 @@ namespace Character
         public Vector3 DeathSkillOffset { get; set; }
         public Vector3 DeathSkillRotation { get; set; }
     }
+    public interface ITraveler
+    {
+        void StartTravel();
+        void EndTravel();
+    }
+    public interface IHitStun
+    {
+        void HitStun(float hitDuration);
+        bool IsHit { get; }
+    }
+    public interface IStun
+    {
+        void Stun(float stunDuration);
+        bool IsStun { get; }
+    }
 }
-

@@ -1,4 +1,4 @@
-using Cinemachine;
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace Battle
@@ -9,8 +9,8 @@ namespace Battle
         [Header("View")]
         [SerializeField, Range(0, 180f)] private float verticalRange;
         [SerializeField, Range(0, 1000)] private float mouseSensitivity = 500;
-        [SerializeField] private CinemachineVirtualCamera wideCam;
-        [SerializeField] private CinemachineVirtualCamera zoomInCam;
+        [SerializeField] private CinemachineCamera wideCam;
+        [SerializeField] private CinemachineCamera zoomInCam;
         public float SlidePower = 3f;
 
         CharacterMovement movement;

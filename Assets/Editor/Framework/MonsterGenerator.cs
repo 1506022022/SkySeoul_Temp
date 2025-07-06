@@ -1,15 +1,15 @@
 using UnityEditor;
 using UnityEngine;
-using BehaviorDesigner.Runtime;
 using Character;
 using System.Reflection;
+using Unity.Behavior;
+using Unity.VisualScripting;
 
 public class MonsterGnerator : Generator<MonsterGnerator>
 {
     [Header("Require")]
     public GameObject Model;
-    public ExternalBehaviorTree Behavior;
-
+    public BehaviorGraph Behavior;
     [Header("Override")]
     public RuntimeAnimatorController Animator;
 
@@ -26,8 +26,11 @@ public class MonsterGnerator : Generator<MonsterGnerator>
 
     protected override void InitializePrefab(GameObject go)
     {
-        var bt = go.GetComponent<BehaviorTree>();
-        bt.ExternalBehavior = Behavior;
+        if(!go.TryGetComponent<BehaviorGraphAgent>(out var bga))
+        {
+            bga = go.AddComponent<BehaviorGraphAgent>();
+        }
+        bga.Graph = Behavior;
 
         var model = GameObject.Instantiate(Model); model.name = nameof(model);
         model.transform.SetParent(go.transform, false);
