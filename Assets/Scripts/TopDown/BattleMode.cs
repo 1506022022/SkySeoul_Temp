@@ -16,14 +16,13 @@ namespace TopDown
     internal class BattleMode : IGameMode
     {
         public event Action OnQuit;
-        ILoad loader;
-        ModeSet set;
-        BattleController battle = new();
-        IPlayable playable;
+        ILoad resourceLoader;
+        ModeSet modeSet;
+        readonly BattleController battle = new();
+        IPlayable playerCharacter;
         List<Loader> loaders;
         FieldComponent current, rootField;
         readonly Dictionary<FieldComponent, bool> fieldClear = new();
-        readonly List<IEnemy> enemy = new();
         readonly StringPair CreateTypeToEvent;
         readonly Loader<GameObject, IPlayable> characterDB;
         readonly Loader<GameObject, IEnemy> enemyDB;
@@ -45,9 +44,9 @@ namespace TopDown
         }
         public void Load(ModeSet set)
         {
-            this.set = set;
+            this.modeSet = set;
             var name = MapType.Lobby.ToString() + "Loader";
-            loader = LoaderFactory.Load<ILoad>(name, name);
+            resourceLoader = LoaderFactory.Load<ILoad>(name, name);
             loaders = new List<Loader>
             {
                 Loader<TextAsset, TextAsset>.GetLoader(nameof(FieldData)),
@@ -58,9 +57,9 @@ namespace TopDown
                 Loader<GameObject, SkillComponent>.GetLoader(nameof(Skill)),
                 new SceneLoader(MapType.BattleMap.ToString())
             };
-            loader.Initialize(loaders);
-            loader.Load();
-            loader.OnLoaded += OnLoaded;
+            resourceLoader.Initialize(loaders);
+            resourceLoader.Load();
+            resourceLoader.OnLoaded += OnLoaded;
         }
         void OnLoaded()
         {
@@ -88,40 +87,31 @@ namespace TopDown
         void ExitMode()
         {
             battle.Clear();
-            battle = null;
             LoaderFactory.Unload();
             while (loaders.Count > 0)
             {
                 loaders[0].Unload();
                 loaders.RemoveAt(0);
             }
-            set.MapType = MapType.Lobby;
+            modeSet.MapType = MapType.Lobby;
             OnQuit?.Invoke();
         }
 
         async void OnClearBattle()
         {
-            if (playable is IControlable controlable && playable is IActor actor)
+            if (playerCharacter is IControlable controlable && playerCharacter is IActor actor)
                 controlable.SetController(new EmptyJoycon(actor));
 
             await UniTask.WaitForSeconds(3f);
             ExitMode();
         }
-        void OnCreatedField(FieldComponent field)
-        {
-            rootField = field;
-            var teh = field.gameObject.AddComponent<TriggerEventHandler>();
-            teh.OnEnter.AddListener((c) => { if (c.GetComponent<IPlayable>() != null) OnEnterField(field); });
-            teh.OnExit.AddListener((c) => { if (c.GetComponent<IPlayable>() != null) OnExitField(field); });
-            fieldClear.Add(field, false);
-        }
         void OnCreatedEntryPoint(FieldComponent entry)
         {
-            if (playable is IActor oldActor) DisposeActor(oldActor);
-            var cache = characterDB.LoadedResources[set.PlayableCharacterID.ToString("D10")];
+            if (playerCharacter is IActor oldActor) DisposeActor(oldActor);
+            var cache = characterDB.LoadedResources[modeSet.PlayableCharacterID.ToString("D10")];
             if (cache == null)
             {
-                Debug.LogWarning($"load fail: {set.PlayableCharacterID.ToString("D10")}");
+                Debug.LogWarning($"load fail: {modeSet.PlayableCharacterID.ToString("D10")}");
                 return;
             }
             if (cache is ITransform transform)
@@ -129,13 +119,22 @@ namespace TopDown
                 var origin = transform.transform.gameObject;
                 var pos = entry.gameObject.transform.position;
                 var rot = entry.gameObject.transform.eulerAngles;
-                playable = (GameObject.Instantiate(origin, pos, Quaternion.Euler(rot))).GetComponent<IPlayable>();
-                if (playable is IActor newActor) OnBirthActor(newActor);
+                playerCharacter = (GameObject.Instantiate(origin, pos, Quaternion.Euler(rot))).GetComponent<IPlayable>();
+                if (playerCharacter is IActor newActor) OnBirthActor(newActor);
             }
             else
             {
-                Debug.LogWarning($"create fail: {set.PlayableCharacterID.ToString("D10")}");
+                Debug.LogWarning($"create fail: {modeSet.PlayableCharacterID.ToString("D10")}");
             }
+        }
+        void OnCreatedField(FieldComponent field)
+        {
+            rootField = field;
+            var teh = field.gameObject.AddComponent<TriggerEventHandler>();
+            teh.OnEnter.AddListener((c) => { if (c.transform.GetComponentInParent<IPlayable>() != null) OnEnterField(field); });
+            teh.OnExit.AddListener((c) => { if (c.transform.GetComponentInParent<IPlayable>() != null) OnExitField(field); });
+            fieldClear.Add(field, false);
+            field.Dispose();
         }
         void OnEnterField(FieldComponent field)
         {
@@ -153,7 +152,6 @@ namespace TopDown
         }
         void OnBirthActor(IActor actor)
         {
-            
             battle.JoinCharacter(actor);
             if (actor is IEnemy enemy) OnBirthEnemy(enemy);
             else if (actor is IPlayable playableCharacter) OnBirthPlayableCharacter(playableCharacter);
@@ -161,21 +159,21 @@ namespace TopDown
         }
         void OnBirthEnemy(IEnemy enemy)
         {
-            rootField.enemys.Add(enemy);
+            rootField.Add(enemy);
         }
         void OnBirthPlayableCharacter(IPlayable pc)
         {
-            if(pc is IInitializable initializable) initializable.Initialize();
+            if (pc is IInitializable initializable) initializable.Initialize();
         }
         void OnBirthProp(IProp prop)
         {
         }
         void OnDeadCharacter(IActor actor)
         {
-            DisposeActor(actor);
             if (actor is IPlayable playable) OnDeadPlayableCharacter(playable);
             else if (actor is IEnemy enemy) OnDeadEnemy(enemy);
             else if (actor is IProp prop) OnDestroyProp(prop);
+            DisposeActor(actor);
         }
         void OnDeadPlayableCharacter(IPlayable character)
         {
@@ -184,7 +182,7 @@ namespace TopDown
         void OnDeadEnemy(IEnemy enemy)
         {
             if (enemy is not MonsterComponent monster) return;
-            if(current == null)
+            if (current == null)
             {
                 Debug.LogWarning("not found field");
                 return;

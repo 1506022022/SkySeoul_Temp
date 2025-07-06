@@ -60,11 +60,11 @@ public class Explosion : MonoBehaviour
     {
         yield return new WaitForSeconds(_waitTime);
 
-        while (_minVelocity < rigid.velocity.magnitude)
+        while (_minVelocity < rigid.linearVelocity.magnitude)
         {
             yield return new WaitForFixedUpdate();
-            rigid.velocity *= _dampingPower;
-            rigid.velocity += Time.fixedDeltaTime * Physics.gravity;
+            rigid.linearVelocity *= _dampingPower;
+            rigid.linearVelocity += Time.fixedDeltaTime * Physics.gravity;
         }
 
         rigid.isKinematic = true;

@@ -8,25 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2004168228871844374, guid: 444c7e2f4aa936a4f9a302ee96d44084,
-        type: 3}
-      propertyPath: SlidePower
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2004168228871844374, guid: 444c7e2f4aa936a4f9a302ee96d44084,
-        type: 3}
-      propertyPath: deathDuration
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 3496343076643787691, guid: 444c7e2f4aa936a4f9a302ee96d44084,
         type: 3}
       propertyPath: m_Name
       value: 2000000000
-      objectReference: {fileID: 0}
-    - target: {fileID: 5829633769133127692, guid: 444c7e2f4aa936a4f9a302ee96d44084,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6657103137059961933, guid: 444c7e2f4aa936a4f9a302ee96d44084,
         type: 3}

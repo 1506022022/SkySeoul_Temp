@@ -1,4 +1,4 @@
-using Cinemachine;
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace Battle
@@ -15,10 +15,10 @@ namespace Battle
         public float MouseSensitivity = 1.5f;
         public float VerticalRange;
         private readonly Transform _body;
-        private readonly CinemachineVirtualCamera _wideCam;
-        private readonly CinemachineVirtualCamera _zoomCam;
-        private CinemachineVirtualCamera _currentView;
-        public ShootingView(Transform body, CinemachineVirtualCamera wide, CinemachineVirtualCamera zoom)
+        private readonly CinemachineCamera _wideCam;
+        private readonly CinemachineCamera _zoomCam;
+        private CinemachineCamera _currentView;
+        public ShootingView(Transform body, CinemachineCamera wide, CinemachineCamera zoom)
         {
             _body = body;
             _wideCam = wide;

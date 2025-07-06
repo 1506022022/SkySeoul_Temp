@@ -1,6 +1,4 @@
-using BehaviorDesigner.Runtime.Tactical;
 using Character;
-using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;

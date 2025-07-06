@@ -13,8 +13,6 @@ MonoBehaviour:
   m_Name: Default Local Group
   m_EditorClassIdentifier: 
   m_GroupName: Default Local Group
-  m_Data:
-    m_SerializedData: []
   m_GUID: 0276e67675016dd4abdd335bcf390490
   m_SerializeEntries:
   - m_GUID: 2b2a3c1b59d3a3940a43b47c949fc2d1
@@ -23,26 +21,50 @@ MonoBehaviour:
     m_SerializedLabels:
     - IPlayable
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6e890fd5f4ff565409741ea52f55e797
-    m_Address: "Assets/0. \uC791\uC5C5/\uC804\uD22C/2100000000.prefab"
+  - m_GUID: 3cb829f8aadced544b3a0b2d67a0c1d8
+    m_Address: Assets/JsonData/Map/A-2.Json
     m_ReadOnly: 0
     m_SerializedLabels:
-    - IEnemy
+    - FieldData
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ec52cec67ef256d409f939a0a966620c
-    m_Address: "Assets/0. \uC791\uC5C5/\uC804\uD22C/Field.prefab"
+  - m_GUID: 52f615171f45f6848b4db94543688940
+    m_Address: Assets/Prefabs/Skill/2300000003.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
-    - FieldComponent
+    - Skill
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fa033f9620f2a1143b4854b769ddd548
-    m_Address: "Assets/0. \uC791\uC5C5/\uC804\uD22C/EntryPoint.prefab"
+  - m_GUID: 68562752f6722be489130708d209c848
+    m_Address: Assets/JsonData/Map/A-1.Json
     m_ReadOnly: 0
     m_SerializedLabels:
-    - FieldComponent
+    - FieldData
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d4078f8b6394e234b89dee57f9bbefac
-    m_Address: Assets/Prefabs/Skill/2300000000.prefab
+  - m_GUID: 70e0edab01f27e7439b82dcd7e4a31be
+    m_Address: Assets/Prefabs/Skill/2300000002.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7701bd5d41cc5c8498c0e7b1570fa052
+    m_Address: Assets/Runtime/Prop/2200000000.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - IProp
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8241631a985b3864093134523b448c62
+    m_Address: Assets/Runtime/PlayableCharacter/2000000004.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - IPlayable
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 895a24eef199808449a777af6e285fd2
+    m_Address: Assets/Prefabs/Skill/2300000004.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 941cb0c6b15924340af9eea26db29976
+    m_Address: Assets/Prefabs/Skill/2300000001.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - Skill
@@ -53,41 +75,17 @@ MonoBehaviour:
     m_SerializedLabels:
     - IEnemy
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5f7d30e6964ed4844986bdc8c7e64807
-    m_Address: Assets/Prefabs/CharacterStruct/2200000001.prefab
+  - m_GUID: d3681d98d3942a546a71b52147215a04
+    m_Address: Assets/Runtime/PlayableCharacter/2000000002.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
-    - IEnemy
+    - IPlayable
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 941cb0c6b15924340af9eea26db29976
-    m_Address: Assets/Prefabs/Skill/2300000001.prefab
+  - m_GUID: d4078f8b6394e234b89dee57f9bbefac
+    m_Address: Assets/Prefabs/Skill/2300000000.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - Skill
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 70e0edab01f27e7439b82dcd7e4a31be
-    m_Address: Assets/Prefabs/Skill/2300000002.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Skill
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 52f615171f45f6848b4db94543688940
-    m_Address: Assets/Prefabs/Skill/2300000003.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Skill
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 895a24eef199808449a777af6e285fd2
-    m_Address: Assets/Prefabs/Skill/2300000004.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Skill
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3cb829f8aadced544b3a0b2d67a0c1d8
-    m_Address: Assets/JsonData/Map/A-2.Json
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - FieldData
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d4f9c9fa28ba3d64cb3f69555024d56b
     m_Address: Assets/JsonData/Map/A-3.Json
@@ -95,23 +93,17 @@ MonoBehaviour:
     m_SerializedLabels:
     - FieldData
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 68562752f6722be489130708d209c848
-    m_Address: Assets/JsonData/Map/A-1.Json
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - FieldData
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7701bd5d41cc5c8498c0e7b1570fa052
-    m_Address: Assets/Runtime/Prop/2200000000.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - IProp
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fe0bf28b895e2d54db10b5c3452ec5e3
-    m_Address: Assets/Runtime/Monster/2100000000.prefab
+  - m_GUID: ea5cd6f6acfc6424d9b27356cef838f3
+    m_Address: Assets/Runtime/Monster/2100000001.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - IEnemy
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ec52cec67ef256d409f939a0a966620c
+    m_Address: "Assets/0. \uC791\uC5C5/\uC804\uD22C/Field.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - FieldComponent
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: eea294481aee3704192c5009efe07e9b
     m_Address: Assets/Runtime/PlayableCharacter/2000000001.prefab
@@ -119,15 +111,21 @@ MonoBehaviour:
     m_SerializedLabels:
     - IPlayable
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d3681d98d3942a546a71b52147215a04
-    m_Address: Assets/Runtime/PlayableCharacter/2000000002.prefab
+  - m_GUID: fa033f9620f2a1143b4854b769ddd548
+    m_Address: "Assets/0. \uC791\uC5C5/\uC804\uD22C/EntryPoint.prefab"
     m_ReadOnly: 0
     m_SerializedLabels:
-    - IPlayable
+    - FieldComponent
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe0bf28b895e2d54db10b5c3452ec5e3
+    m_Address: Assets/Runtime/Monster/2100000000.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - IEnemy
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7107e067d9f312f4998c197892b1440a, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: ccd21eb794630a541961729bee6f10b8, type: 2}
     - {fileID: 11400000, guid: e538a15ba2f9d5c4398dbcdce8266aec, type: 2}
+    - {fileID: 11400000, guid: ccd21eb794630a541961729bee6f10b8, type: 2}

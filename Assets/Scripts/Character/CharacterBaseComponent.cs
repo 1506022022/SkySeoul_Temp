@@ -85,10 +85,19 @@ namespace Character
             (walk as IUpdateReceiver).Update(Time.fixedDeltaTime);
             (gravity as IUpdateReceiver).Update(Time.fixedDeltaTime);
 
-            float walkStrength = (walk as IStrength)?.GetStrength() ?? 0.5f;
-            walkStrength = Mathf.Max(walkStrength, 0.5f);
-            if (walkStrength == 0.5f) { animator.SetBool("IsMove", false); (walk as IStrength)?.SetStrength(0f); }
-            animator.SetFloat("MoveSpeed", walkStrength);
+            if (walk is IStrength walkStrength && walkStrength.GetStrength() != 0)
+            {
+                var strength = walkStrength.GetStrength();
+                if (0.5f < strength)
+                {
+                    animator.SetFloat("MoveSpeed", strength);
+                }
+                else
+                {
+                    animator.SetBool("IsMove", false);
+                    walkStrength.SetStrength(0f);
+                }
+            }
 
             OnFixedUpdate();
         }

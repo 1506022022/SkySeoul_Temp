@@ -32,7 +32,7 @@ namespace Util
                 return;
             }
 
-            var velocity = _movement.velocity;
+            var velocity = _movement.linearVelocity;
 
             if (Mathf.Abs(velocity.magnitude) < 1f)
             {
