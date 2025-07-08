@@ -4,21 +4,23 @@ using UnityEngine;
 
 namespace Character
 {
-    public abstract class PropBaseComponent : EntityBaseComponent, IDamageable, IDeathable, IInitializable, IProp
+    public abstract class PropBaseComponent : EntityBaseComponent, IDamageable, IDeathable, IInitializable, IProp, IHitStun
     {
         [SerializeField] protected Animator animator;
         [SerializeField] protected HitBoxComponent body;
         HitBox IDamageable.HitBox { get => body?.HitBox ?? HitBox.Empty; }
-        playercontroller controller;
 
+        [SerializeField] bool initOnAwake;
         public bool IsDead { get; private set; }
 
         float IDeathable.DeathDuration { get; set; }
 
+        float hitTime;
+        bool IHitStun.IsHit => Time.time < hitTime;
+
         void IInitializable.Initialize()
         {
             OnInitialize();
-            controller = new(this);
         }
         protected virtual void OnInitialize() { }
         void IDeathable.Die()
@@ -38,6 +40,7 @@ namespace Character
         void IDamageable.TakeDamage()
         {
             animator?.SetTrigger("Damaged");
+            if (this is IHitStun hitStun && !hitStun.IsHit) hitStun.HitStun(0.1f);
             OnTakeDamage();
         }
         protected virtual void OnTakeDamage() { }
@@ -45,9 +48,15 @@ namespace Character
         {
             (this as IInitializable)?.Initialize();
         }
-        private void LateUpdate()
+
+        private void Awake()
         {
-            controller?.Update();
+            if (initOnAwake) (this as IInitializable).Initialize();
+        }
+
+        void IHitStun.HitStun(float hitDuration)
+        {
+            hitTime = Time.time + hitDuration;
         }
     }
 }

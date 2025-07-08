@@ -12,11 +12,11 @@ namespace Character
     public interface ISliding { void Slide(); }
     public interface IHP { Statistics HP { get; } }
     public interface IControlable { void SetController(IController controller); }
-    public interface IDeathSkillOwner
+    public interface ISkillOwner
     {
-        public SkillComponent DeathSkill { get; set; }
-        public Vector3 DeathSkillOffset { get; set; }
-        public Vector3 DeathSkillRotation { get; set; }
+        public SkillComponent Skill { get; set; }
+        public Vector3 SkillOffset { get; set; }
+        public Vector3 SkillRotation { get; set; }
     }
     public interface ITraveler
     {
@@ -32,5 +32,10 @@ namespace Character
     {
         void Stun(float stunDuration);
         bool IsStun { get; }
+    }
+    public interface ICaster
+    {
+        void Invoke();
+        void Cancel();
     }
 }

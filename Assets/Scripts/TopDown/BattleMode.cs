@@ -215,13 +215,13 @@ namespace TopDown
             if (instance is not IProp prop) return instance;
             if (data is not PropData elements) return instance;
 
-            if (instance is not IDeathSkillOwner death) return instance;
+            if (instance is not ISkillOwner death) return instance;
             var skillDB = Loader<GameObject, SkillComponent>.GetLoader(nameof(Skill));
             if (!skillDB.LoadedResources.TryGetValue(elements.ExitSkill, out var skill)) return instance;
-            death.DeathSkill = GameObject.Instantiate(skill);
-            death.DeathSkill.Disable();
-            death.DeathSkillOffset = elements.SkillOffset;
-            death.DeathSkillRotation = elements.Rotation;
+            death.Skill = GameObject.Instantiate(skill);
+            death.Skill.Disable();
+            death.SkillOffset = elements.SkillOffset;
+            death.SkillRotation = elements.Rotation;
             return instance;
         }
     }

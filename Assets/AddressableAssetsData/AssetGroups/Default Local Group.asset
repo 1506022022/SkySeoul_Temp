@@ -15,6 +15,18 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 0276e67675016dd4abdd335bcf390490
   m_SerializeEntries:
+  - m_GUID: 0038f2a1de2c24147823477c8a7dc73f
+    m_Address: Assets/Runtime/Prop/2200000003.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - IProp
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 160901f0c011bf84084c290cb3c3cc6c
+    m_Address: Assets/Runtime/Skill/2300000005.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2b2a3c1b59d3a3940a43b47c949fc2d1
     m_Address: "Assets/0. \uC791\uC5C5/\uC804\uD22C/2000000000.prefab"
     m_ReadOnly: 0
@@ -51,6 +63,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - IProp
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 789707ae8eb508a42acc5fde80e27e13
+    m_Address: Assets/Runtime/Skill/2300000007.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8241631a985b3864093134523b448c62
     m_Address: Assets/Runtime/PlayableCharacter/2000000004.prefab
     m_ReadOnly: 0
@@ -75,6 +93,24 @@ MonoBehaviour:
     m_SerializedLabels:
     - IEnemy
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bac6a5c8d5a199749b155b737368a3c3
+    m_Address: Assets/Runtime/Monster/2100000002.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - IEnemy
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c7cd225b0adde6c4f9479e8bbdbbf117
+    m_Address: Assets/Runtime/Prop/2200000002.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - IProp
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ce6bda9842c612f4b8a69bdb396b9681
+    m_Address: Assets/Runtime/Skill/2300000006.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d3681d98d3942a546a71b52147215a04
     m_Address: Assets/Runtime/PlayableCharacter/2000000002.prefab
     m_ReadOnly: 0
@@ -92,6 +128,12 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - FieldData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e30919cb891f0824e8d563cf1439122e
+    m_Address: Assets/Runtime/PlayableCharacter/2000000005.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - IPlayable
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ea5cd6f6acfc6424d9b27356cef838f3
     m_Address: Assets/Runtime/Monster/2100000001.prefab

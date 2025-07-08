@@ -2,25 +2,39 @@ using UnityEngine;
 
 namespace Character
 {
-    public sealed class LampComponent : PropBaseComponent, IDeathSkillOwner, IHP
+    public sealed class LampComponent : PropBaseComponent, ISkillOwner, ICaster
     {
-        [field: SerializeField] public SkillComponent DeathSkill { get; set; }
-        [field: SerializeField] public Vector3 DeathSkillOffset { get; set; }
-        [field: SerializeField] public Vector3 DeathSkillRotation { get; set; }
+        [field: SerializeField] public SkillComponent Skill { get; set; }
+        [field: SerializeField] public Vector3 SkillOffset { get; set; }
+        [field: SerializeField] public Vector3 SkillRotation { get; set; }
 
-        Statistics IHP.HP { get; } = new Statistics(1);
+        SkillComponent SkillInstance;
+
+        bool initialize => Skill != null && SkillInstance != null;
 
         protected override void OnInitialize()
         {
+            base.OnInitialize();
+
+            if (initialize || Skill == null) return;
+            SkillInstance = GameObject.Instantiate(Skill);
+            SkillInstance.Disable();
         }
 
-        protected override void OnDie()
+        void ICaster.Invoke()
         {
-            if (DeathSkill == null) return;
-            var exitSkillInstance = GameObject.Instantiate(DeathSkill);
-            exitSkillInstance.transform.position = transform.position + DeathSkillOffset;
-            exitSkillInstance.transform.eulerAngles = transform.eulerAngles + DeathSkillRotation;
-            exitSkillInstance.Fire();
+            if (!initialize) return;
+
+            SkillInstance.transform.position = transform.position + SkillOffset;
+            SkillInstance.transform.eulerAngles = transform.eulerAngles + SkillRotation;
+            SkillInstance.Fire();
+        }
+
+        void ICaster.Cancel()
+        {
+            if (!initialize) return;
+
+            SkillInstance.Disable();
         }
     }
 }

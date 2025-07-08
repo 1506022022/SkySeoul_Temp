@@ -15,10 +15,9 @@ public partial class HasAbnormalStatus : Action
 
     protected override Status OnStart()
     {
-        Has.Value = false;
         switch (AbnormalStatus.Value)
         {
-            case global::AbnormalStatus.Hit:
+            case global::AbnormalStatus.HitStun:
                 if (!Actor.Value.TryGetComponent<IHitStun>(out var hitStun)) break;
                 Has.Value = hitStun.IsHit;
                 break;
@@ -26,9 +25,14 @@ public partial class HasAbnormalStatus : Action
                 if (!Actor.Value.TryGetComponent<IStun>(out var stun)) break;
                 Has.Value = stun.IsStun;
                 break;
-            default: break;
+            case global::AbnormalStatus.Die:
+                if (!Actor.Value.TryGetComponent<IDeathable>(out var deathable)) break;
+                Has.Value = deathable.IsDead;
+                break;
+            default:
+                Has.Value = false;
+                break;
         }
-
         return Status.Success;
     }
 

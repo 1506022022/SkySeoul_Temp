@@ -5,15 +5,15 @@ using UnityEngine;
 
 namespace Battle
 {
-    public class Barricade : CharacterComponent, IProp, IDeathSkillOwner
+    public class Barricade : CharacterComponent, IProp, ISkillOwner
     {
         HitBoxComponent body;
         Transform model;
         public string ModelPath;
 
-        [field: SerializeField] public SkillComponent DeathSkill { get; set; }
-        [field: SerializeField] public Vector3 DeathSkillOffset { get; set; }
-        [field: SerializeField] public Vector3 DeathSkillRotation { get; set; }
+        [field: SerializeField] public SkillComponent Skill { get; set; }
+        [field: SerializeField] public Vector3 SkillOffset { get; set; }
+        [field: SerializeField] public Vector3 SkillRotation { get; set; }
 
         public override void Initialize()
         {
@@ -76,11 +76,11 @@ namespace Battle
             magnitude = 0.2f;
             StartCoroutine(HitAnim());
 
-            if (DeathSkill == null) return;
-            if (!IsPrefabInstance(DeathSkill.gameObject)) DeathSkill = GameObject.Instantiate(DeathSkill);
-            DeathSkill.transform.position = transform.position + DeathSkillOffset;
-            DeathSkill.transform.eulerAngles = transform.eulerAngles + DeathSkillRotation;
-            DeathSkill.Fire();
+            if (Skill == null) return;
+            if (!IsPrefabInstance(Skill.gameObject)) Skill = GameObject.Instantiate(Skill);
+            Skill.transform.position = transform.position + SkillOffset;
+            Skill.transform.eulerAngles = transform.eulerAngles + SkillRotation;
+            Skill.Fire();
         }
 
         bool IsPrefabInstance(GameObject obj)

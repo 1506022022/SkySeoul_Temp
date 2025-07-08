@@ -18,7 +18,8 @@ MonoBehaviour:
   m_Variables:
   - rid: 8244193286658457730
   - rid: 8244193286658457731
-  m_VersionTimestamp: 638873516677165185
+  - rid: 8244193325570326686
+  m_VersionTimestamp: 638875024139739628
   m_CommandBuffer:
     m_Commands: []
   m_RuntimeBlackboardAsset: {fileID: 3485826256965194688}
@@ -47,6 +48,17 @@ MonoBehaviour:
         IsExposed: 1
         m_IsShared: 1
         m_Value: 0
+    - rid: 8244193325570326686
+      type: {class: 'TypedVariableModel`1[[System.Boolean, mscorlib]]', ns: Unity.Behavior.GraphFramework,
+        asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 13026363496901914095
+          m_Value1: 121521823850149540
+        Name: dead
+        IsExposed: 1
+        m_IsShared: 1
+        m_Value: 0
 --- !u!114 &3485826256965194688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59,7 +71,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
   m_Name: AbnormalStatus
   m_EditorClassIdentifier: 
-  VersionTimestamp: 638873516677165185
+  VersionTimestamp: 638875024139739628
   AssetID:
     m_Value0: 10726445784451181603
     m_Value1: 1495312732777482857
@@ -67,11 +79,14 @@ MonoBehaviour:
     m_Variables:
     - rid: 8244193286658457732
     - rid: 8244193286658457733
+    - rid: 8244193325570326687
   m_SharedBlackboardVariableGuids:
   - m_Value0: 11358305731151512353
     m_Value1: 9775574987440027240
   - m_Value0: 3237690603377921876
     m_Value1: 7169692429820626003
+  - m_Value0: 13026363496901914095
+    m_Value1: 121521823850149540
   references:
     version: 2
     RefIds:
@@ -92,4 +107,13 @@ MonoBehaviour:
           m_Value0: 3237690603377921876
           m_Value1: 7169692429820626003
         Name: stun
+        m_Value: 0
+    - rid: 8244193325570326687
+      type: {class: 'BlackboardVariable`1[[System.Boolean, mscorlib]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 13026363496901914095
+          m_Value1: 121521823850149540
+        Name: dead
         m_Value: 0

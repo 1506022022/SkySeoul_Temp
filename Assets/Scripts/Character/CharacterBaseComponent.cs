@@ -10,7 +10,8 @@ namespace Character
     {
         [SerializeField] protected Animator animator;
         [SerializeField] protected HitBoxComponent body;
-        Statistics IHP.HP { get; } = new(1);
+        [SerializeField] Statistics hp = new(1);
+        Statistics IHP.HP =>hp;
         HitBox IDamageable.HitBox { get => body?.HitBox ?? HitBox.Empty; }
         readonly IMove walk = new Walk();
         readonly IMove gravity = new ReciveGravity();
@@ -21,6 +22,7 @@ namespace Character
         void IInitializable.Initialize()
         {
             (this as IDeathable).Revive();
+            (this as IHP).HP.Initialize();
             walk.SetActor(transform);
             gravity.SetActor(transform);
             OnInitialize();

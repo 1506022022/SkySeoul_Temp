@@ -5,7 +5,7 @@ using UnityEngine;
 public class Statistics
 {
     public event Action<Statistics> OnValueChanged;
-    float maxValue;
+    [SerializeField, Min(1)] float maxValue;
     public float MaxValue
     {
         get => maxValue;
@@ -40,5 +40,9 @@ public class Statistics
     {
         this.value = value;
         this.maxValue = maxValue;
+    }
+    public void Initialize()
+    {
+        Initialize(this.maxValue, this.maxValue);
     }
 }
